@@ -1,3 +1,5 @@
+import { END_POINT } from "../../app/constants";
+
 // A mock function to mimic making an async request for data
 export function fetchLoggedInUser(userId) {
   return new Promise(async (resolve) => {
@@ -23,7 +25,7 @@ export function fetchLoggedInUserOrders(userId) {
 export function updateUser(update) {
   return new Promise(async (resolve) => {
     console.log(update)
-    const res = await fetch('http://localhost:8080/users/' + update.id, {
+    const res = await fetch(END_POINT + '/users/' + update.id, {
       method: "PATCH",
       body: JSON.stringify(update),
       headers: { 'content-type': 'application/json' }

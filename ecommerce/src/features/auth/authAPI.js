@@ -1,8 +1,11 @@
+import { END_POINT } from "../../app/constants";
+
+
 // A mock function to mimic making an async request for data
 export function createUser(userdata) {
   return new Promise(async (resolve) => {
     // console.log(userdata)
-    const res = await fetch('http://localhost:8080/auth/signup', {
+    const res = await fetch(END_POINT + '/auth/signup', {
       method: "POST",
       body: JSON.stringify(userdata),
       headers: { 'content-type': 'application/json' }
@@ -30,7 +33,7 @@ export function checkuser(loginInfo) {
 
     try {
 
-      const res = await fetch('http://localhost:8080/auth/login', {
+      const res = await fetch(END_POINT + '/auth/login', {
         method: "POST",
         body: JSON.stringify(loginInfo),
         headers: { 'content-type': 'application/json' }

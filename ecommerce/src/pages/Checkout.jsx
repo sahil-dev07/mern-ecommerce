@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import { deleteItemFromCartAsync, selectCartStatus, selectItems, updateCartAsync } from '../features/cart/cartSlice'
+import { deleteItemFromCartAsync, resetCartAsync, selectCartStatus, selectItems, updateCartAsync } from '../features/cart/cartSlice'
 import { useForm } from "react-hook-form";
 import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
@@ -38,8 +38,8 @@ const Checkout = () => {
         dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }));
     };
 
-    const handleRemove = (e, id) => {
-        dispatch(deleteItemFromCartAsync(id));
+    const handleRemove = (e, id, user) => {
+        dispatch(deleteItemFromCartAsync({ productId: id, userId: user.id }));
     };
 
     const handleAddress = (e) => {
@@ -56,8 +56,10 @@ const Checkout = () => {
     const handleOrder = (e) => {
         const order = { items, totalAmount, totalItems, user: user.id, paymentMethod, selectedAddress, status: "pending" }
         dispatch(createOrderAsync(order))
-        //TODO : Redirect to order-success page
+        // dispatch(resetCartAsync(user.id))
+        //TODO : Redirect to order-success page   done
         //TODO : clear cart after order
+
         //TODO : on server change the stock number of items
     };
 
@@ -407,7 +409,7 @@ const Checkout = () => {
 
                                                         <div className="flex">
                                                             <button
-                                                                onClick={(e) => handleRemove(e, item.id)}
+                                                                onClick={(e) => handleRemove(e, item.id, user)}
                                                                 type="button"
                                                                 className="font-medium text-indigo-600 hover:text-indigo-500"
                                                             >

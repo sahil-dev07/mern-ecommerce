@@ -1,7 +1,9 @@
+import { END_POINT } from "../../app/constants";
+
 export function createOrder(order) {
   return new Promise(async (resolve) => {
     // console.log(order)
-    const res = await fetch('http://localhost:8080/orders', {
+    const res = await fetch(END_POINT + '/orders', {
       method: "POST",
       body: JSON.stringify(order),
       headers: { 'content-type': 'application/json' }
@@ -16,7 +18,7 @@ export function createOrder(order) {
 export function updateOrder(order) {
   return new Promise(async (resolve) => {
     // console.log(order)
-    const res = await fetch('http://localhost:8080/orders/' + order.id, {
+    const res = await fetch(END_POINT + '/orders/' + order.id, {
       method: "PATCH",
       body: JSON.stringify(order),
       headers: { 'content-type': 'application/json' }
@@ -42,7 +44,7 @@ export function fetchAllOrders(sort, pagination) {
 
 
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/orders?' + queryString)
+    const response = await fetch(END_POINT + '/orders?' + queryString)
     // console.log('http://localhost:8080/orders?' + queryString)
     const data = await response.json()
     const totalOrders = response.headers.get("X-Total-Count")

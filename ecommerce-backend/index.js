@@ -12,6 +12,7 @@ const orderRouters = require('./router/order')
 const cors = require('cors')
 require('dotenv').config()
 const atlas = process.env.DATABASE_URI
+const port = process.env.PORT || 8080
 
 // authentication
 const session = require('express-session');
@@ -20,7 +21,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const { User } = require('./model/user')
 
 
-
+// integrating frontend (build folder)
+server.use(express.static("build"))
 
 
 
@@ -119,6 +121,6 @@ server.get('/', (req, res) => {
     res.json({ status: "success" })
 })
 
-server.listen(8080, () => {
-    console.log("listening to port 8080")
+server.listen(port, () => {
+    console.log("listening to port : ", port)
 })
