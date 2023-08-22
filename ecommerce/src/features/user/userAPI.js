@@ -3,7 +3,7 @@ import { END_POINT } from "../../app/constants";
 // A mock function to mimic making an async request for data
 export function fetchLoggedInUser(userId) {
   return new Promise(async (resolve) => {
-    const res = await fetch('http://localhost:8080/users/' + userId)
+    const res = await fetch(END_POINT + '/users/' + userId)
     const data = await res.json()
     resolve({ data })
   }
@@ -14,7 +14,7 @@ export function fetchLoggedInUser(userId) {
 export function fetchLoggedInUserOrders(userId) {
   return new Promise(async (resolve) => {
     // console.log('http://localhost:8080/orders/user/' + userId)
-    const res = await fetch('http://localhost:8080/orders/user/' + userId)
+    const res = await fetch(END_POINT + '/orders/user/' + userId)
     const data = await res.json()
     resolve({ data })
   }
