@@ -32,6 +32,7 @@ export default function Cart() {
     toast.success("Item Deleted From the Cart")
   }
   console.log(items)
+  console.log(open)
   return (
 
     <>

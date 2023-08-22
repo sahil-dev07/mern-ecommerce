@@ -232,9 +232,9 @@ export default function ProductDetail() {
                                 <div className="mt-10">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                                        <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                        <div href="" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                                             Size guide
-                                        </a>
+                                        </div>
                                     </div>
 
                                     <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">

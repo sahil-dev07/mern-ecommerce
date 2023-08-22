@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import { deleteItemFromCartAsync, resetCartAsync, selectCartStatus, selectItems, updateCartAsync } from '../features/cart/cartSlice'
+import { deleteItemFromCartAsync, selectCartStatus, selectItems, updateCartAsync } from '../features/cart/cartSlice'
 import { useForm } from "react-hook-form";
 import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
@@ -17,7 +17,7 @@ const Checkout = () => {
         register,
         handleSubmit,
         reset,
-        formState: { errors },
+
     } = useForm();
 
     const currentOrder = useSelector(selectCurrentOrder)

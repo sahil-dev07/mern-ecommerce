@@ -15,7 +15,7 @@ const ProductForm = () => {
         handleSubmit,
         setValue,
         reset,
-        formState: { },
+
     } = useForm();
 
 
