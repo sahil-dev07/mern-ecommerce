@@ -14,7 +14,7 @@ const UserOrder = () => {
             // console.log("fetched orders : ", userInfo.id)
             dispatch(fetchLoggedInUserOrdersAsync(userInfo.id));
         }
-    }, [])
+    }, [dispatch, userInfo])
     // console.log(orders)
     return (
         <>

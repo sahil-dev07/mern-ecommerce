@@ -25,9 +25,9 @@ export default function ProductList() {
   const status = useSelector(selectProductListStatus)
 
 
-  const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
   useEffect(() => {
     // console.log("products in useeffect")
+    const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
     dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }))
 
   }, [dispatch, filter, sort, page])

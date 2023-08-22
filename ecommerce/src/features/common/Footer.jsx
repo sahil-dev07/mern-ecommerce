@@ -11,6 +11,7 @@ const Footer = () => {
                         <div className="flex items-center border  rounded-lg px-4 py-2 w-52 mx-2">
                             <img
                                 src="https://cdn-icons-png.flaticon.com/512/888/888857.png"
+                                alt='img'
                                 className="w-7 md:w-8"
                             />
                             <div className="text-left ml-3">
@@ -21,6 +22,7 @@ const Footer = () => {
                         <div className="flex items-center border  rounded-lg px-4 py-2 w-44 mx-2">
                             <img
                                 src="https://cdn-icons-png.flaticon.com/512/888/888841.png"
+                                alt='img'
                                 className="w-7 md:w-8"
                             />
                             <div className="text-left ml-3">
