@@ -16,7 +16,7 @@ import { END_POINT } from "../../app/constants";
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
     // console.log("hello boy " + id)
-    const response = await fetch(`http://localhost:8080/products/${id}`)
+    const response = await fetch(END_POINT + `/products/${id}`)
     const data = await response.json()
     // console.log(data)
     resolve({ data })
