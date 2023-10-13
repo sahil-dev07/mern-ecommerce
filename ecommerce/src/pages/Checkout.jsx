@@ -35,7 +35,10 @@ const Checkout = () => {
     const [paymentMethod, setPaymentMethod] = useState('cash');
 
     const handleQuantity = (e, item) => {
-        dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }));
+        // dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }));
+
+        dispatch(updateCartAsync({ userId: user.id, productId: item.product.id, quantity: +e.target.value }))
+
     };
 
     const handleRemove = (e, id, user) => {
@@ -409,7 +412,7 @@ const Checkout = () => {
 
                                                         <div className="flex">
                                                             <button
-                                                                onClick={(e) => handleRemove(e, item.id, user)}
+                                                                onClick={(e) => handleRemove(e, item.product.id, user)}
                                                                 type="button"
                                                                 className="font-medium text-indigo-600 hover:text-indigo-500"
                                                             >
