@@ -57,13 +57,18 @@ const Checkout = () => {
 
 
     const handleOrder = (e) => {
-        const order = { items, totalAmount, totalItems, user: user.id, paymentMethod, selectedAddress, status: "pending" }
-        dispatch(createOrderAsync(order))
-        // dispatch(resetCartAsync(user.id))
-        //TODO : Redirect to order-success page   done
-        //TODO : clear cart after order
+        if (selectedAddress === null)
+            alert("Please Select Shipping Address");
+        else {
 
-        //TODO : on server change the stock number of items
+            const order = { items, totalAmount, totalItems, user: user.id, paymentMethod, selectedAddress, status: "pending" }
+            dispatch(createOrderAsync(order))
+            // dispatch(resetCartAsync(user.id))
+            //TODO : Redirect to order-success page   done
+            //TODO : clear cart after order
+
+            //TODO : on server change the stock number of items
+        }
     };
 
 
