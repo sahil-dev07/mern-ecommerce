@@ -5,7 +5,7 @@ exports.createUser = async (req, res) => {
     const user = new User(req.body)
     try {
         const doc = await user.save()
-        res.json({ id: doc.id, role: doc.role }).status(201)
+        res.json({ id: doc.id, role: doc.role, name: doc.name }).status(201)
     } catch (error) {
         console.log(error)
         res.status(400).json(error)
