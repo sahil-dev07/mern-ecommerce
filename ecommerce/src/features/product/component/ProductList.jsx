@@ -84,6 +84,8 @@ export default function ProductList() {
     setFilter(newFilter)
     // console.log("products in handlefilter", newFilter)
     // dispatch(fetchProductsByFilterAsync({ newFilter, sort, pagination }))
+
+    console.log({ filter, newFilter });
   }
 
   const handleSort = (e, option) => {

@@ -60,15 +60,24 @@ export function upadteProduct(update) {
 export function fetchProductsByFilter(filter, sort, pagination, admin) {
 
   // filter: {"category":"smartphone"}
-  // todo : multiple values
+  // todo : multiple values                          done
   let queryString = ""
-
-  for (let key in filter) {
-    const categoryValues = filter[key]
-    if (categoryValues.length) {
-      const lastCategoryValue = categoryValues[categoryValues.length - 1]
-      queryString += `${key}=${lastCategoryValue}&`
-    }
+  //Category
+  if (filter.category && filter.category.length > 0) {
+    queryString += `category=`
+    filter.category.forEach(categoryValue => {
+      queryString += `${categoryValue},`;
+    });
+    queryString += `&`
+  }
+  console.log({ filter });
+  //Barnds
+  if (filter.brand && filter.brand.length > 0) {
+    queryString += `brand=`
+    filter.brand.forEach(brandValue => {
+      queryString += `${brandValue},`;
+    });
+    queryString += `&`
   }
 
   for (let key in sort) {
@@ -85,6 +94,7 @@ export function fetchProductsByFilter(filter, sort, pagination, admin) {
 
 
   return new Promise(async (resolve) => {
+    // console.log(`${END_POINT}/products?${queryString}`);
     const response = await fetch(`${END_POINT}/products?${queryString}`)
     const data = await response.json()
     const totalItems = await response.headers.get("X-Total-Count")

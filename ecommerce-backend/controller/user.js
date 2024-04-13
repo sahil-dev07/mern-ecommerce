@@ -9,7 +9,7 @@ exports.fetchUserById = async (req, res) => {
 
         const doc = await User.findById(id)
 
-        console.log(doc)
+        // console.log(doc)
         res.json(doc).status(200)
     } catch (error) {
         console.log(error)
