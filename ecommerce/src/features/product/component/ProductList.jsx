@@ -20,10 +20,12 @@ export default function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts)
   const totalItems = useSelector(selectTotalItems)
-  const brands = useSelector(selectBrands)
-  const category = useSelector(selectCategory)
+  const originalBrands = useSelector(selectBrands)
+  const originalCategory = useSelector(selectCategory)
   const status = useSelector(selectProductListStatus)
 
+  const [category, setCategory] = useState([])
+  const [brands, setBrands] = useState([])
 
   useEffect(() => {
     // console.log("products in useeffect")
@@ -65,7 +67,32 @@ export default function ProductList() {
     },
   ]
 
+  useEffect(() => {
+    setCategory(originalCategory);
+    setBrands(originalBrands)
+  }, [originalCategory, originalBrands])
+
+  const updateCheckbox = (option) => {
+    const updatedCategory = category.map((obj) => {
+      if (obj.id === option.id)
+        return { ...obj, checked: !obj.checked }
+
+      return obj
+    })
+    setCategory(updatedCategory)
+
+    const updatedBrands = brands.map((obj) => {
+      if (obj.id === option.id)
+        return { ...obj, checked: !obj.checked }
+
+      return obj
+    })
+    setBrands(updatedBrands)
+  }
+
   const handleFilter = (e, section, option) => {
+    // changes on frontend
+    updateCheckbox(option)
     const newFilter = { ...filter }
     if (e.target.checked) {
 
@@ -82,10 +109,18 @@ export default function ProductList() {
     }
 
     setFilter(newFilter)
+    // console.log({ filters, e, section, option })
     // console.log("products in handlefilter", newFilter)
     // dispatch(fetchProductsByFilterAsync({ newFilter, sort, pagination }))
 
-    console.log({ filter, newFilter });
+    // console.log({ filter, newFilter });
+  }
+
+  const handleClearFilter = (e) => {
+    e.preventDefault()
+    setFilter({})
+    setCategory(originalCategory)
+    setBrands(originalBrands)
   }
 
   const handleSort = (e, option) => {
@@ -107,6 +142,7 @@ export default function ProductList() {
           mobileFiltersOpen={mobileFiltersOpen}
           setMobileFiltersOpen={setMobileFiltersOpen}
           filters={filters}
+          handleClearFilter={handleClearFilter}
         ></MobileFilter>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -185,7 +221,7 @@ export default function ProductList() {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              <DesktopFilter handleFilter={handleFilter} filters={filters}></DesktopFilter>
+              <DesktopFilter handleFilter={handleFilter} filters={filters} handleClearFilter={handleClearFilter}></DesktopFilter>
               {/* Product grid */}
               <div className="lg:col-span-3">
                 <ProductGrid products={products} status={status}></ProductGrid>
@@ -211,7 +247,8 @@ function MobileFilter({
   mobileFiltersOpen,
   setMobileFiltersOpen,
   handleFilter,
-  filters
+  filters,
+  handleClearFilter
 }) {
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -256,6 +293,9 @@ function MobileFilter({
               </div>
 
               {/* Filters */}
+              <button className='text-left ml-4'
+                onClick={(e) => { handleClearFilter(e) }}
+              >Clear Filter</button>
               <form className="mt-4 border-t border-gray-200">
                 {filters.map((section) => (
                   <Disclosure
@@ -326,9 +366,12 @@ function MobileFilter({
   );
 }
 
-function DesktopFilter({ handleFilter, filters }) {
+function DesktopFilter({ handleFilter, filters, handleClearFilter }) {
   return (
     <form className="hidden lg:block">
+      <button
+        onClick={(e) => { handleClearFilter(e) }}
+      >Clear Filter</button>
       {filters.map((section) => (
         <Disclosure
           as="div"
@@ -360,7 +403,7 @@ function DesktopFilter({ handleFilter, filters }) {
                         name={`${section.id}[]`}
                         defaultValue={option.value}
                         type="checkbox"
-                        defaultChecked={option.checked}
+                        checked={option.checked}
                         onChange={(e) => handleFilter(e, section, option)}
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                       />
