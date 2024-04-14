@@ -16,7 +16,7 @@ exports.addToCart = async (req, res) => {
     try {
         const doc = await cart.save()
         const result = await doc.populate('product')
-        console.log(result)
+        // console.log(result)
         res.json(result).status(201)
     } catch (error) {
         console.log(error)
@@ -25,7 +25,7 @@ exports.addToCart = async (req, res) => {
 }
 
 exports.updateCart = async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const { userId, productId, quantity } = req.body
     try {
         // inorder to get the updated doc in return {new:true} is written
@@ -35,11 +35,11 @@ exports.updateCart = async (req, res) => {
             return res.status(404).json({ message: 'Cart item not found' });
         }
 
-        console.log("old ", updatedCart)
+        // console.log("old ", updatedCart)
         updatedCart.quantity = quantity
         await updatedCart.save()
         const result = await updatedCart.populate('product')
-        console.log("new ", result)
+        // console.log("new ", result)
         res.json(result).status(200)
     } catch (error) {
         console.log(error)
@@ -51,7 +51,7 @@ exports.deleteFromCart = async (req, res) => {
     const { product, user } = req.query
 
     try {
-        console.log({ product, user })
+        // console.log({ product, user })
         const doc = await Cart.findOneAndDelete({ product: product, user: user })
         res.json(doc).status(200)
     } catch (error) {

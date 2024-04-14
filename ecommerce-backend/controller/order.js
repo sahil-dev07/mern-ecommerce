@@ -39,7 +39,7 @@ exports.deleteOrder = async (req, res) => {
 
 exports.updateOrder = async (req, res) => {
     const { id } = req.params
-    console.log(req.body, { id: id })
+    // console.log(req.body, { id: id })
     try {
         // inorder to get the updated doc in return {new:true} is written
         const updatedOrder = await Order.findByIdAndUpdate(id, req.body, { new: true })
