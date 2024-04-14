@@ -70,7 +70,7 @@ export function fetchProductsByFilter(filter, sort, pagination, admin) {
     });
     queryString += `&`
   }
-  console.log({ filter });
+  // console.log({ filter });
   //Barnds
   if (filter.brand && filter.brand.length > 0) {
     queryString += `brand=`
