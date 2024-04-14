@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectAllProducts, fetchProductsByFilterAsync, selectTotalItems, selectBrands, selectCategory, fetchCategoryAsync, fetchBrandsAsync, selectProductListStatus } from '../productSlice';
 import { Fragment, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon, FunnelIcon, PlusIcon, Squares2X2Icon, StarIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, FunnelIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { ITEMS_PER_PAGE } from '../../../app/constants';
 import Pagination from '../../common/Pagination';
 import MobileFilter from './MobileFilter';

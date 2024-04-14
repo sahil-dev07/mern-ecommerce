@@ -1,5 +1,5 @@
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
+import { Disclosure } from '@headlessui/react'
 
 export default function DesktopFilter({ handleFilter, filters, handleClearFilter }) {
     return (
