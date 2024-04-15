@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
-import { RadioGroup } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProductByIdAsync, selectProductListStatus, selectedProductById } from '../productSlice'
 import { useParams } from 'react-router-dom'
