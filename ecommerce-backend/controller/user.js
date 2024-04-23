@@ -7,7 +7,7 @@ exports.fetchUserById = async (req, res) => {
     try {
         // const doc = await User.findById(id, 'name email id')
 
-        const doc = await User.findById(id)
+        const doc = await User.findById(id).select("-password")
 
         // console.log(doc)
         res.json(doc).status(200)

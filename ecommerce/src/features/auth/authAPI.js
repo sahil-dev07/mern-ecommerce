@@ -1,18 +1,26 @@
 import { END_POINT } from "../../app/constants";
 
 
-// A mock function to mimic making an async request for data
+
 export function createUser(userdata) {
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve, reject) => {
     // console.log(userdata)
     const res = await fetch(END_POINT + '/auth/signup', {
       method: "POST",
       body: JSON.stringify(userdata),
       headers: { 'content-type': 'application/json' }
     })
-    //TODO: on server it will only return relevent information
+
     const data = await res.json()
-    resolve({ data })
+
+    if (res.ok) {
+      // console.log("resolved", data);
+      resolve({ data })
+    }
+    else {
+      // console.log("rejected ", data);
+      reject({ data })
+    }
   }
   );
 }
@@ -27,7 +35,7 @@ export function signOut(userId) {
   );
 }
 
-// A mock function to mimic making an async request for data
+
 export function checkuser(loginInfo) {
   return new Promise(async (resolve, reject) => {
 
@@ -38,14 +46,14 @@ export function checkuser(loginInfo) {
         body: JSON.stringify(loginInfo),
         headers: { 'content-type': 'application/json' }
       })
+      const data = await res.json()
 
       if (res.ok) {
-        const data = await res.json()
-        // console.log({ data })
+        // console.log("res.ok true ", data)
         resolve({ data })
       } else {
-        const err = await res.json()
-        reject(err)
+        // console.log("Error in login authAPI", data);
+        reject({ data })
       }
 
     } catch (error) {

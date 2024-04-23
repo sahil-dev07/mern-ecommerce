@@ -26,6 +26,7 @@ export default function ProductList() {
   const [category, setCategory] = useState([])
   const [brands, setBrands] = useState([])
 
+  // Filter
   useEffect(() => {
     // console.log("products in useeffect")
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
@@ -33,11 +34,13 @@ export default function ProductList() {
 
   }, [dispatch, filter, sort, page])
 
+  // Page No.
   useEffect(() => {
     setPage(1)
     // console.log(totalItems)
   }, [totalItems, sort])
 
+  // brands and category
   useEffect(() => {
     dispatch(fetchBrandsAsync())
     dispatch(fetchCategoryAsync())
@@ -45,6 +48,12 @@ export default function ProductList() {
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
+
+  // used for filter (checkbox problem)
+  useEffect(() => {
+    setCategory(originalCategory);
+    setBrands(originalBrands)
+  }, [originalCategory, originalBrands])
 
   const sortOptions = [
     { name: 'Best Rating', sort: 'rating', order: "desc", current: false },
@@ -66,10 +75,7 @@ export default function ProductList() {
     },
   ]
 
-  useEffect(() => {
-    setCategory(originalCategory);
-    setBrands(originalBrands)
-  }, [originalCategory, originalBrands])
+
 
   const updateCheckbox = (option) => {
     const updatedCategory = category.map((obj) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { createUserAsync, selectLoggedInUser } from '../authSlice';
+import { createUserAsync, selectError, selectLoggedInUser } from '../authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -9,6 +9,7 @@ export default function Signup() {
     const dispatch = useDispatch()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const user = useSelector(selectLoggedInUser)
+    const error = useSelector(selectError)
     return (
         <>
 
@@ -77,9 +78,7 @@ export default function Signup() {
                                         required: "Password is required",
                                         pattern: {
                                             value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-                                            message: `- at least 8 characters \n
-                                      - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number \n
-                                      - Can contain special characters`,
+                                            message: `- at least 8 characters \n - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number \n - Can contain special characters`,
                                         }
                                     })}
                                     type="password"
@@ -109,6 +108,7 @@ export default function Signup() {
                                 />
                                 {errors.confirmPassword && <p className='text-red-500'>{errors.confirmPassword.message}</p>}
                             </div>
+                            {error.signup && <p className='text-red-500'>{error.message}</p>}
                         </div>
 
                         <div>

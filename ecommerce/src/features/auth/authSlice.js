@@ -6,16 +6,26 @@ import { checkuser, createUser, signOut } from './authAPI';
 const initialState = {
   loggedInUser: null,  // used only for id and role
   status: 'idle',
-  error: null,
+  // error: null,
+  error: {
+    login: false,
+    signup: false,
+    message: "default error"
+  }
 };
 
 
 export const createUserAsync = createAsyncThunk(
   'user/createUser',
   async (userdata) => {
-    const response = await createUser(userdata);
-
-    return response.data;
+    try {
+      const response = await createUser(userdata);
+      // console.log(response);
+      return response.data;
+    } catch (error) {
+      // console.log(error);
+      return error.data
+    }
   }
 );
 // already present in userslice
@@ -31,9 +41,12 @@ export const createUserAsync = createAsyncThunk(
 export const checkUserAsync = createAsyncThunk(
   'user/checkUser',
   async (loginInfo) => {
-    const response = await checkuser(loginInfo);
-
-    return response.data;
+    try {
+      const response = await checkuser(loginInfo);
+      return response.data;
+    } catch (error) {
+      return error.data
+    }
   }
 );
 
@@ -66,14 +79,38 @@ export const authSlice = createSlice({
       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.loggedInUser = action.payload;
+        if (action.payload.message) {
+          state.error = {
+            login: false,
+            signup: true,
+            message: action.payload.message
+          }
+        }
+        else
+          state.loggedInUser = action.payload;
       })
+      // .addCase(createUserAsync.rejected, (state, action) => {
+      //   state.status = 'idle';
+      //   console.log(action.payload);
+      //   state.error = {
+      //     signup: true,
+      //     message: action.payload
+      //   }
+      // })
       .addCase(checkUserAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(checkUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.loggedInUser = action.payload;
+        if (action.payload.message) {
+          state.error = {
+            login: true,
+            signup: false,
+            message: action.payload.message
+          }
+        }
+        else
+          state.loggedInUser = action.payload;
       })
       .addCase(checkUserAsync.rejected, (state, action) => {
         state.status = 'idle';
