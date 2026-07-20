@@ -14,6 +14,11 @@ const userSchema = new Schema({
         type: String,
         unique: true,
         required: true,
+        // Store emails normalized. Login/signup zod already lowercases the input,
+        // but findOne is case-sensitive, so the DB copy must match. lowercase+trim
+        // runs on every save/create; existing rows are backfilled by the migration.
+        lowercase: true,
+        trim: true,
     },
     password: {
         type: String,
