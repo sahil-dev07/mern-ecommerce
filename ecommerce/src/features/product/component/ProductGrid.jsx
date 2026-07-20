@@ -30,7 +30,7 @@ export default function ProductGrid({ products, status }) {
                                 <div className="mt-4 flex justify-between">
                                     <div>
                                         <h3 className="text-sm text-gray-700">
-                                            <div href={product.thumbnail}>
+                                            <div>
                                                 <span aria-hidden="true" className="absolute inset-0" />
                                                 {product.title}
                                             </div>

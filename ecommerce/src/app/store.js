@@ -4,6 +4,7 @@ import {
   FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // localStorage
+import { authMiddleware } from './authMiddleware';
 import productReducer from '../features/product/productSlice';
 import authReducer from '../features/auth/authSlice';
 import cartReducer from '../features/cart/cartSlice';
@@ -40,7 +41,8 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+      // authMiddleware forces a clean logout on any 401 rejection.
+    }).concat(authMiddleware),
 });
 
 export const persistor = persistStore(store);
