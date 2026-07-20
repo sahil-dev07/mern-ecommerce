@@ -3,7 +3,6 @@ import {
   persistReducer, persistStore,
   FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // localStorage
 import { authMiddleware } from './authMiddleware';
 import productReducer from '../features/product/productSlice';
 import authReducer from '../features/auth/authSlice';
@@ -21,6 +20,27 @@ const rootReducer = combineReducers({
   order: orderReducer,
   user: userReducer,
 });
+
+// localStorage engine for redux-persist, defined inline on purpose.
+// The usual `import storage from 'redux-persist/lib/storage'` resolves to the
+// CJS module *namespace* under Vite 8's production (rollup) build, so
+// `storage.getItem`/`setItem` come back undefined and rehydration throws a blank
+// white screen (works in dev via esbuild, breaks only in the prod bundle).
+// Defining the engine here sidesteps the CJS/ESM interop entirely and degrades
+// to a no-op when localStorage is unavailable (SSR / privacy mode).
+const storage =
+  typeof window !== 'undefined' && window.localStorage
+    ? {
+        getItem: (key) => Promise.resolve(window.localStorage.getItem(key)),
+        setItem: (key, value) =>
+          Promise.resolve(window.localStorage.setItem(key, value)),
+        removeItem: (key) => Promise.resolve(window.localStorage.removeItem(key)),
+      }
+    : {
+        getItem: () => Promise.resolve(null),
+        setItem: () => Promise.resolve(),
+        removeItem: () => Promise.resolve(),
+      };
 
 // Persist ONLY the auth slice, so a hard refresh keeps the user logged in.
 // (The token lives separately in localStorage['token'], read by apiClient.)
