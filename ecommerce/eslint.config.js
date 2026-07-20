@@ -39,10 +39,6 @@ export default [
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       // Enforce the console.log cleanup going forward; allow deliberate warn/error.
       'no-console': ['warn', { allow: ['warn', 'error'] }],
-      // The API layer wraps fetch in `new Promise(async (resolve) => ...)` (~21 sites),
-      // which swallows errors. The real fix is Phase E's full async/await rewrite of
-      // every wrapper — not this migration. Warn (not error) until then, then delete.
-      'no-async-promise-executor': 'warn',
       // Unused vars are warnings (legacy tech debt); allow _-prefixed args + PascalCase/CONSTs.
       'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' }],
     },
