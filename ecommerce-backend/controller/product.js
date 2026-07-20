@@ -17,17 +17,18 @@ exports.fetchAllProducts = catchAsync(async (req, res) => {
     let query = Product.find(condition)
     let totalProductQuery = Product.find(condition)
 
-    // Category filter (comma-separated list; a trailing empty entry is popped).
+    // Category filter. Accepts both a single value ("smartphone", sent by the
+    // currently-served CRA build) and a comma list ("a,b" or a trailing-comma
+    // "a,b,", sent by the newer multi-select frontend). filter(Boolean) drops any
+    // empty segments so we never end up with $in:[] (which would match nothing).
     if (req.query.category) {
-        const categories = req.query.category.split(',')
-        categories.pop()
+        const categories = req.query.category.split(',').filter(Boolean)
         query = query.find({ category: { $in: categories } })
         totalProductQuery = Product.find({ category: { $in: categories } })
     }
-    // Brand filter.
+    // Brand filter — same single-value-or-comma-list handling as category.
     if (req.query.brand) {
-        const brands = req.query.brand.split(',')
-        brands.pop()
+        const brands = req.query.brand.split(',').filter(Boolean)
         query = query.find({ brand: { $in: brands } })
         totalProductQuery = Product.find({ brand: { $in: brands } })
     }

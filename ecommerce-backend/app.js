@@ -20,6 +20,12 @@ const orderRouters = require('./router/order')
 // side-effect-free lets tests (supertest) and boot-checks import `app` directly.
 const app = express()
 
+// Render terminates TLS at a proxy and forwards the client IP in X-Forwarded-For.
+// Trust one proxy hop so req.ip resolves to the real client — otherwise
+// express-rate-limit keys every request on the shared proxy IP (and logs
+// ERR_ERL_UNEXPECTED_X_FORWARDED_FOR), lumping all users into one rate-limit bucket.
+app.set('trust proxy', 1)
+
 // CORS allowlist — a SUPERSET of every origin used during the migration: the
 // Render origin (which serves build/ today), local dev, plus any FRONTEND_ORIGIN
 // entries (the Netlify frontend, added in Phase F). Tightened to just the
