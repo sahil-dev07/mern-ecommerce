@@ -1,5 +1,10 @@
+import forms from '@tailwindcss/forms'
+import aspectRatio from '@tailwindcss/aspect-ratio'
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+// ESM form required: "type":"module" in package.json makes .js files ESM,
+// so the old CJS module.exports/require() would crash the build.
+export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
@@ -10,6 +15,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/forms')],
+  plugins: [aspectRatio, forms],
 }
-
