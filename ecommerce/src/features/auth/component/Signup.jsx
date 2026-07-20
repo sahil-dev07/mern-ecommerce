@@ -108,7 +108,7 @@ export default function Signup() {
                                 />
                                 {errors.confirmPassword && <p className='text-red-500'>{errors.confirmPassword.message}</p>}
                             </div>
-                            {error.signup && <p className='text-red-500'>{error.message}</p>}
+                            {error && <p className='text-red-500'>{error.message}</p>}
                         </div>
 
                         <div>
