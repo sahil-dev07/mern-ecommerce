@@ -1,126 +1,31 @@
-const express = require('express')
-const server = express()
+require('dotenv').config()
 
 const mongoose = require('mongoose')
-const productsRouters = require('./router/products')
-const brandsRouters = require('./router/brands')
-const categoriesRouters = require('./router/categories')
-const userRouters = require('./router/users')
-const authRouters = require('./router/auth')
-const cartRouters = require('./router/cart')
-const orderRouters = require('./router/order')
-const cors = require('cors')
-require('dotenv').config()
-const atlas = process.env.DATABASE_URI
+const app = require('./app')
+const logger = require('./config/logger')
+
+// Fail fast if required secrets are missing, rather than connecting to
+// `undefined` or booting an app that would 500 on the first auth call.
+const REQUIRED_ENV = ['DATABASE_URI', 'JWT_SECRET']
+const missing = REQUIRED_ENV.filter((key) => !process.env[key])
+if (missing.length) {
+    logger.error(`Missing required env vars: ${missing.join(', ')}`)
+    process.exit(1)
+}
+
 const port = process.env.PORT || 8080
 
-// authentication
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const { User } = require('./model/user')
-
-
-// integrating frontend (build folder)
-server.use(express.static("build"))
-
-
-
-
-// const atlas = "mongodb+srv://sahilgupta86046:Ihv3ZiSNOyb0c0WW@cluster0.tlhmh8r.mongodb.net/Ecommerce?retryWrites=true&w=majority"
-mongoose.connect(atlas, {
-    family: 4
-    // useCreateIndex: true,
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true
-})
-    .then(() => { console.log('connected to ecommerce Database ') })
-    .catch((err) => { console.log('Opps cant connect to Database ' + err) })
-
-
-
-// middleware
-
-
-server.use(session({
-    secret: 'keyboard cat',
-    resave: false, // don't save session if unmodified
-    saveUninitialized: false, // don't create session until something 
-}));
-
-server.use(passport.initialize());
-server.use(passport.session());
-
-
-
-server.use(cors({
-    exposedHeaders: ['X-Total-Count']
-}))
-// to parse req.body to json
-server.use(express.json())
-
-
-
-// to add /products automatically 
-server.use('/products', productsRouters.router)
-server.use('/brands', brandsRouters.router)
-server.use('/categories', categoriesRouters.router)
-server.use('/users', userRouters.router)
-server.use('/auth', authRouters.router)
-server.use('/cart', cartRouters.router)
-server.use('/orders', orderRouters.router)
-
-
-// passport strategy 
-passport.use(new LocalStrategy(async function (username, password, done) {
-    console.log("hello gyues")
+// Connect to MongoDB first, then start the HTTP server only after a successful
+// connection — so the app never accepts requests against a dead database.
+async function start() {
     try {
-        const user = await User.findOne({ email: username }).exec()
-        console.log("hello", { user })
-
-        if (!user) {
-            done(null, false, { message: "Invalid Credential" })
-        }
-        else if (user.password === password) {
-            // console.log(user)
-            done(null, user)
-        }
-        else {
-            done(null, false, { message: "Invalid Credential" })
-        }
-
-
+        await mongoose.connect(process.env.DATABASE_URI, { family: 4 })
+        logger.info('Connected to ecommerce database')
+        app.listen(port, () => logger.info(`Server listening on port ${port}`))
+    } catch (err) {
+        logger.error({ err }, 'Failed to connect to database')
+        process.exit(1)
     }
+}
 
-    catch (error) {
-        console.log("from middleware ", error)
-        done(error)
-    }
-})
-);
-
-// this create session variable req.user on being called 
-passport.serializeUser(function (user, cb) {
-    console.log("serialise")
-    process.nextTick(function () {
-        return cb(null, { id: user.id, role: user.role });
-    });
-});
-// this changes session variable req.user when called from authorized request 
-passport.deserializeUser(function (user, cb) {
-    console.log("deserialise")
-
-    process.nextTick(function () {
-        return cb(null, user);
-    });
-});
-
-
-
-server.get('/', (req, res) => {
-    res.json({ status: "success" })
-})
-
-server.listen(port, () => {
-    console.log("listening to port : ", port)
-})
+start()

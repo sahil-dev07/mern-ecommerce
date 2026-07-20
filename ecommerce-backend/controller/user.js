@@ -1,32 +1,16 @@
-
 const { User } = require("../model/user")
+const catchAsync = require("../utils/catchAsync")
 
-exports.fetchUserById = async (req, res) => {
-
+exports.fetchUserById = catchAsync(async (req, res) => {
     const { id } = req.params
-    try {
-        // const doc = await User.findById(id, 'name email id')
+    const doc = await User.findById(id).select("-password")
+    res.status(200).json(doc)
+})
 
-        const doc = await User.findById(id).select("-password")
-
-        // console.log(doc)
-        res.json(doc).status(200)
-    } catch (error) {
-        console.log(error)
-        res.status(400).json(error)
-    }
-}
-
-exports.updateUser = async (req, res) => {
+exports.updateUser = catchAsync(async (req, res) => {
     const { id } = req.params
-
-    try {
-        // inorder to get the updated doc in return {new:true} is written
-        const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true })
-        res.json(updatedUser).status(200)
-    } catch (error) {
-        console.log(error)
-        res.status(400).json(error)
-    }
-}
-
+    // {new:true} returns the updated document; strip password from the response.
+    // NOTE (Phase C): whitelist to {name, addresses} — currently a blind update.
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true }).select("-password")
+    res.status(200).json(updatedUser)
+})

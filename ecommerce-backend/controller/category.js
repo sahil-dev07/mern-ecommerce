@@ -1,24 +1,13 @@
 const { Category } = require("../model/category")
+const catchAsync = require("../utils/catchAsync")
 
-exports.fetchCategories = async (req, res) => {
-    try {
-        const categories = await Category.find({})
-        // console.log("cat fetched")
-        res.json(categories).status(200)
-    } catch (error) {
-        res.send(error).status(400)
-    }
-}
+exports.fetchCategories = catchAsync(async (req, res) => {
+    const categories = await Category.find({})
+    res.status(200).json(categories)
+})
 
-exports.createCategory = async (req, res) => {
-    // create a new category
+exports.createCategory = catchAsync(async (req, res) => {
     const category = new Category(req.body)
-    try {
-        const doc = await category.save()
-        // console.log(doc)
-        res.json(doc).status(201)
-    } catch (error) {
-        console.log(error)
-        res.status(400).json(error)
-    }
-}
+    const doc = await category.save()
+    res.status(201).json(doc)
+})

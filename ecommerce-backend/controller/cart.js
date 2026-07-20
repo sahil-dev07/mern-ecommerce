@@ -1,61 +1,33 @@
-
 const { Cart } = require("../model/cart")
+const catchAsync = require("../utils/catchAsync")
 
-exports.fetchCartByUser = async (req, res) => {
+exports.fetchCartByUser = catchAsync(async (req, res) => {
     const { user } = req.query
-    try {
-        const cartItems = await Cart.find({ user: user }).populate('user').populate('product')
-        res.send(cartItems).status(200)
-    } catch (error) {
-        res.send(error).status(400)
-    }
-}
+    const cartItems = await Cart.find({ user }).populate('user').populate('product')
+    res.status(200).json(cartItems)
+})
 
-exports.addToCart = async (req, res) => {
+exports.addToCart = catchAsync(async (req, res) => {
     const cart = new Cart(req.body)
-    try {
-        const doc = await cart.save()
-        const result = await doc.populate('product')
-        // console.log(result)
-        res.json(result).status(201)
-    } catch (error) {
-        console.log(error)
-        res.status(400).json(error)
-    }
-}
+    const doc = await cart.save()
+    const result = await doc.populate('product')
+    res.status(201).json(result)
+})
 
-exports.updateCart = async (req, res) => {
-    // console.log(req.body)
+exports.updateCart = catchAsync(async (req, res) => {
     const { userId, productId, quantity } = req.body
-    try {
-        // inorder to get the updated doc in return {new:true} is written
-        const updatedCart = await Cart.findOne({ user: userId, product: productId })
-
-        if (!updatedCart) {
-            return res.status(404).json({ message: 'Cart item not found' });
-        }
-
-        // console.log("old ", updatedCart)
-        updatedCart.quantity = quantity
-        await updatedCart.save()
-        const result = await updatedCart.populate('product')
-        // console.log("new ", result)
-        res.json(result).status(200)
-    } catch (error) {
-        console.log(error)
-        res.status(400).json(error)
+    const cartItem = await Cart.findOne({ user: userId, product: productId })
+    if (!cartItem) {
+        return res.status(404).json({ message: 'Cart item not found' })
     }
-}
+    cartItem.quantity = quantity
+    await cartItem.save()
+    const result = await cartItem.populate('product')
+    res.status(200).json(result)
+})
 
-exports.deleteFromCart = async (req, res) => {
+exports.deleteFromCart = catchAsync(async (req, res) => {
     const { product, user } = req.query
-
-    try {
-        // console.log({ product, user })
-        const doc = await Cart.findOneAndDelete({ product: product, user: user })
-        res.json(doc).status(200)
-    } catch (error) {
-        console.log(error)
-        res.status(400).json(error)
-    }
-}
+    const doc = await Cart.findOneAndDelete({ product, user })
+    res.status(200).json(doc)
+})
