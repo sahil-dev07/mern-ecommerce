@@ -19,7 +19,6 @@ export const addToCartAsync = createAsyncThunk(
 export const updateCartAsync = createAsyncThunk(
   'cart/updateCart',
   async (update) => {
-    console.log(update)
     const response = await updateCart(update);
 
     return response.data;
@@ -38,7 +37,6 @@ export const deleteItemFromCartAsync = createAsyncThunk(
 export const resetCartAsync = createAsyncThunk(
   'cart/resetCart',
   async (userId) => {
-    console.log("reset cart cartslice")
     const response = await resetCart(userId);
     return response.data;
   }
@@ -97,7 +95,6 @@ export const cartSlice = createSlice({
       })
       .addCase(deleteItemFromCartAsync.fulfilled, (state, action) => {
         const index = state.items.findIndex(item => item.product.id === action.payload.id)
-        console.log({ "cart slice  id :": action.payload.id, cart: state.items })
         state.items.splice(index, 1);
         state.status = 'idle';
 

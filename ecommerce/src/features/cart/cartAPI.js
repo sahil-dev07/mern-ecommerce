@@ -65,12 +65,9 @@ export async function resetCart(userId) {
 
   // get All items of user's cart and then delete each
   return new Promise(async (resolve) => {
-    console.log("reset cart cartapi")
 
-    console.log("in cart reset before fetchitem call")
     const response = await fetchItemsByUserId(userId)
     const items = response.data
-    console.log("In cart reset")
 
     for (let item of items) {
       await deleteItemFromCart({ productId: item.product.id, userId: userId })

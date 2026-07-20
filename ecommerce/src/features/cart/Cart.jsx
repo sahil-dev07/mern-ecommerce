@@ -22,7 +22,6 @@ export default function Cart() {
   const totalItems = items.reduce((total, item) => item.quantity + total, 0)
 
   const handleQuantity = (e, item) => {
-    console.log({ userId: user.id, productId: item.product.id, quantity: +e.target.value })
     dispatch(updateCartAsync({ userId: user.id, productId: item.product.id, quantity: +e.target.value }))
     toast.success("Item Updated")
   }
@@ -31,8 +30,6 @@ export default function Cart() {
     // console.log(user)
     toast.success("Item Deleted From the Cart")
   }
-  console.log(items)
-  console.log(open)
   return (
 
     <>

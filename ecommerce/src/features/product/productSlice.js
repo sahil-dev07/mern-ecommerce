@@ -74,7 +74,6 @@ export const createProductAsync = createAsyncThunk(
 export const updateProductAsync = createAsyncThunk(
   'product/updateProduct',
   async (update) => {
-    console.log("in sclice")
     const response = await upadteProduct(update);
     return response.data;
   }

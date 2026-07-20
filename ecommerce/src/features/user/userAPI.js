@@ -24,7 +24,6 @@ export function fetchLoggedInUserOrders(userId) {
 // update user (address)
 export function updateUser(update) {
   return new Promise(async (resolve) => {
-    console.log(update)
     const res = await fetch(END_POINT + '/users/' + update.id, {
       method: "PATCH",
       body: JSON.stringify(update),

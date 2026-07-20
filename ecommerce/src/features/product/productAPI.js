@@ -50,7 +50,6 @@ export function upadteProduct(update) {
       headers: { 'content-type': 'application/json' },
     })
     const data = await response.json()
-    console.log("in API")
     resolve({ data })
 
   }
