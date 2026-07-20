@@ -1,15 +1,16 @@
 const express = require('express')
 const { fetchOrderByUser, createOrder, deleteOrder, updateOrder, fetchAllOrders } = require('../controller/order')
-
-
+const validate = require('../middleware/validate')
+const { createOrderBody, updateOrderBody, orderListQuery } = require('../validators')
 
 const router = express.Router()
 
-// /brands is already added in the base path
-router.get('/user/:userId', fetchOrderByUser)
-    .post('/', createOrder)
+// /orders is added in app.js.
+router
+    .get('/user/:userId', fetchOrderByUser)
+    .post('/', validate(createOrderBody), createOrder)
     .delete('/:id', deleteOrder)
-    .patch('/:id', updateOrder)
-    .get('/', fetchAllOrders)
+    .patch('/:id', validate(updateOrderBody), updateOrder)
+    .get('/', validate(orderListQuery, 'query'), fetchAllOrders)
 
 exports.router = router
