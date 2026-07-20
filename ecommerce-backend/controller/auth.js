@@ -1,50 +1,29 @@
 const { User } = require("../model/user")
+const catchAsync = require("../utils/catchAsync")
 
-exports.createUser = async (req, res) => {
-    // create a new user
-    try {
-        // console.log(req.body);
-        const { email } = req.body
-        const existedUser = await User.findOne({ email })
-        if (existedUser) {
-            res.status(401).json({
-                message: "User Already Exist"
-            })
-            return
-        }
-        else {
-            const user = await User.create(req.body)
-            // console.log(user);
-            res.status(201).json({ id: user.id, role: user.role })
-        }
-    } catch (error) {
-        console.log("Error in create User", error)
-        res.status(400).json(error)
+// Register a new user.
+// NOTE (Phase C): req.body is still mass-assignable (a client can send
+// role:'admin') — this is locked down with a field whitelist in a later phase.
+exports.createUser = catchAsync(async (req, res) => {
+    const { email } = req.body
+    const existedUser = await User.findOne({ email })
+    if (existedUser) {
+        return res.status(409).json({ message: "User already exists" })
     }
-}
+    // Password is hashed by the model's pre-save hook.
+    const user = await User.create(req.body)
+    res.status(201).json({ id: user.id, role: user.role })
+})
 
-exports.loginUser = async (req, res) => {
-    try {
-        // console.log(req.body);
-        const { email, password } = req.body
-        const user = await User.findOne(
-            { email: email },
-        )
-
-        if (!user) {
-            // console.log("user not present");
-            res.status(401).json({ message: 'no such user email' });
-            return
-        }
-        // console.log({ user })
-        const isPasswordValid = await user.isPasswordCorrect(password)
-        if (isPasswordValid) {
-            res.status(200).json({ id: user.id, role: user.role });
-        } else {
-            res.status(401).json({ message: 'invalid credentials' });
-        }
-    } catch (err) {
-        console.log("Error while login", err);
-        res.status(400).json(err);
+// Authenticate a user. Password is verified via the bcrypt-backed
+// isPasswordCorrect() method on the model.
+// NOTE (Phase B): this will issue a JWT; today it only returns id/role.
+exports.loginUser = catchAsync(async (req, res) => {
+    const { email, password } = req.body
+    const user = await User.findOne({ email })
+    // Generic message for both branches so we don't leak which emails exist.
+    if (!user || !(await user.isPasswordCorrect(password))) {
+        return res.status(401).json({ message: 'Invalid credentials' })
     }
-}
+    res.status(200).json({ id: user.id, role: user.role })
+})
