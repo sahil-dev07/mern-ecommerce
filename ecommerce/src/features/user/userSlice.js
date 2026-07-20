@@ -83,8 +83,8 @@ export const userSlice = createSlice({
 });
 
 // Optional-chain the orders read: userInfo is null until the profile loads.
-export const selectUserOrders = (state) => state.users.userInfo?.orders
-export const selectUserInfo = (state) => state.users.userInfo
-export const selectUserError = (state) => state.users.error
+export const selectUserOrders = (state) => state.user.userInfo?.orders
+export const selectUserInfo = (state) => state.user.userInfo
+export const selectUserError = (state) => state.user.error
 
 export default userSlice.reducer;
