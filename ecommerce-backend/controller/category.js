@@ -15,7 +15,7 @@ exports.createCategory = async (req, res) => {
     const category = new Category(req.body)
     try {
         const doc = await category.save()
-        console.log(doc)
+        // console.log(doc)
         res.json(doc).status(201)
     } catch (error) {
         console.log(error)

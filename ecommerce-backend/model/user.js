@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+var bcrypt = require('bcryptjs');
 
 const { Schema } = mongoose
 {
@@ -51,6 +52,19 @@ userSchema.set('toJSON', {
     versionKey: false,
     transform: function (doc, ret) { delete ret._id }
 })
+
+// hashing
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next()
+
+    this.password = await bcrypt.hash(this.password, 10)
+    next()
+})
+
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password)
+}
+
 
 exports.User = mongoose.model('User', userSchema)
 

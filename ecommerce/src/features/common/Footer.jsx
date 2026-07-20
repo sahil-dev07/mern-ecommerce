@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 const Footer = () => {
     return (
         <div className=" bg-gray-900">
@@ -38,7 +38,11 @@ const Footer = () => {
                         © Sahil, 2023.{" "}
                     </p>
                     <div className="order-1 md:order-2">
-                        <span className="px-2">About us</span>
+                        <span className="px-2">
+                            <Link to="https://sahil-my-portfolio.netlify.app/"
+                                target='_blank' >
+                                About us</Link>
+                        </span>
                         <span className="px-2 border-l">Contact us</span>
                         <span className="px-2 border-l">Privacy Policy</span>
                     </div>

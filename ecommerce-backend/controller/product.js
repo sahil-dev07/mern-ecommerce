@@ -14,6 +14,7 @@ exports.createProduct = async (req, res) => {
 }
 
 exports.fetchAllProducts = async (req, res) => {
+    // console.log(req.query.category);
     let condition = {}
     if (!req.query.admin) {
         condition.deleted = { $ne: true }
@@ -24,14 +25,18 @@ exports.fetchAllProducts = async (req, res) => {
     let totalProductQuery = Product.find(condition)
     // category filter
     if (req.query.category) {
-        query = query.find({ category: req.query.category })
-        totalProductQuery = Product.find({ category: req.query.category })
+        const categories = req.query.category.split(',');
+        categories.pop()
+        query = query.find({ category: { $in: categories } });
+        totalProductQuery = Product.find({ category: { $in: categories } })
 
     }
     // brand filter
     if (req.query.brand) {
-        query = query.find({ brand: req.query.brand })
-        totalProductQuery = Product.find({ brand: req.query.brand })
+        const brands = req.query.brand.split(",")
+        brands.pop()
+        query = query.find({ brand: { $in: brands } })
+        totalProductQuery = Product.find({ brand: { $in: brands } })
     }
     // sort
     if (req.query._sort && req.query._order) {
