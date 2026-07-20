@@ -109,7 +109,15 @@ const router = createBrowserRouter([
     path: "*",
     element: <PageNotFound />
   }
-]);
+], {
+  // Opt into React Router v7 behavior now to silence deprecation warnings and
+  // smooth the eventual v6->v7 upgrade: wrap state updates in startTransition
+  // and use relative splat-path resolution.
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  },
+});
 
 function App() {
   const dispatch = useDispatch()

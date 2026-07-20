@@ -46,12 +46,10 @@ const Checkout = () => {
     };
 
     const handleAddress = (e) => {
-        console.log(e.target.value);
         setSelectedAddress(user.addresses[e.target.value]);
     };
 
     const handlePayment = (e) => {
-        console.log(e.target.value);
         setPaymentMethod(e.target.value);
     };
 

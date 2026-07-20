@@ -18,7 +18,6 @@ const UserProfile = () => {
     const [selectedEditIndex, setselectedEditIndex] = useState(-1)
     const [showAddAddressForm, setShowAddAddressfrom] = useState(false)
 
-    console.log(userInfo)
     const handleAdd = (address) => {
         const newUser = { ...userInfo, addresses: [...userInfo.addresses, address] }
 

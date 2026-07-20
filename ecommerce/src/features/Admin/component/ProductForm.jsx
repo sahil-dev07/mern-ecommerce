@@ -64,7 +64,6 @@ const ProductForm = () => {
         dispatch(updateProductAsync(product))
         toast.success("Item Deleted")
     }
-    console.log(selectedProduct)
     return (
         <>
             <ToastContainer
@@ -115,8 +114,6 @@ const ProductForm = () => {
 
                     if (param.id) {
                         product.id = param.id
-                        console.log(param.id)
-                        console.log(product)
                         dispatch(updateProductAsync(product))
                         alert("Product updated")
                         reset()
@@ -196,7 +193,7 @@ const ProductForm = () => {
                                     >
                                         <option value="">--choose brand--</option>
                                         {brands.map((brand) => (
-                                            <option value={brand.value}>{brand.label}</option>
+                                            <option key={brand.value} value={brand.value}>{brand.label}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -217,7 +214,7 @@ const ProductForm = () => {
                                     >
                                         <option value="">--choose category--</option>
                                         {categories.map((category) => (
-                                            <option value={category.value}>{category.label}</option>
+                                            <option key={category.value} value={category.value}>{category.label}</option>
                                         ))}
                                     </select>
                                 </div>
