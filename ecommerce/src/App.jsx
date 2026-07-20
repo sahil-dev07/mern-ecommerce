@@ -82,23 +82,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/order-success/:orderId",
-    element: <OrderSuccessPage />
-
+    element: <Protected><OrderSuccessPage /></Protected>
   },
   {
     path: "/orders",
-    element: <UserOrderPage />
-
+    element: <Protected><UserOrderPage /></Protected>
   },
   {
     path: "/profile",
-    element: <UserProfilePage />
-
+    element: <Protected><UserProfilePage /></Protected>
   },
   {
     path: "/logout",
-    element: <Logout />
-
+    element: <Protected><Logout /></Protected>
   },
   {
     path: "/forgot-password",
@@ -109,7 +105,15 @@ const router = createBrowserRouter([
     path: "*",
     element: <PageNotFound />
   }
-]);
+], {
+  // Opt into React Router v7 behavior now to silence deprecation warnings and
+  // smooth the eventual v6->v7 upgrade: wrap state updates in startTransition
+  // and use relative splat-path resolution.
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  },
+});
 
 function App() {
   const dispatch = useDispatch()
@@ -118,7 +122,7 @@ function App() {
     if (user) {
       dispatch(fetchItemsByUserIdAsync(user.id))
       dispatch(fetchLoggedInUserAsync(user.id))
-      console.log(user)
+      // console.log(user)
     }
   }, [user, dispatch])
   return (

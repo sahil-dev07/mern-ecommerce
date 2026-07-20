@@ -1,14 +1,14 @@
 const express = require('express')
-const { createUser } = require('../controller/auth')
-const { loginUser } = require('../controller/auth')
-const passport = require('passport');
+const { createUser, loginUser } = require('../controller/auth')
+const validate = require('../middleware/validate')
+const { authLimiter } = require('../middleware/rateLimit')
+const { signupBody, loginBody } = require('../validators')
+
 const router = express.Router()
 
-// /products is already added in the base path
-router.post('/signup', createUser)
-    .post('/login', loginUser)
-// router.post('/login', passport.authenticate('local'), loginUser)
-
+// Base path /auth is added in app.js. Rate-limited + validated.
+router
+    .post('/signup', authLimiter, validate(signupBody), createUser)
+    .post('/login', authLimiter, validate(loginBody), loginUser)
 
 exports.router = router
-

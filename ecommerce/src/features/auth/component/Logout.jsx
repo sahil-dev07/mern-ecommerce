@@ -8,8 +8,7 @@ const Logout = () => {
     const user = useSelector(selectLoggedInUser)
     useEffect(() => {
         dispatch(signOutAsync())
-
-    })
+    }, [dispatch])
     return (
         <>
             <div>Logout</div>

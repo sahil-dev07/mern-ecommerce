@@ -198,7 +198,7 @@ export default function AdminProductDetail() {
                                 <div className="mt-10">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                                        <div href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                        <div className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                                             Size guide
                                         </div>
                                     </div>

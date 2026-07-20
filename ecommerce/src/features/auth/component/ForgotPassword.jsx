@@ -27,7 +27,7 @@ export default function Login() {
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6"
-                    onSubmit={handleSubmit((data) => { console.log(data) })}>
+                    onSubmit={handleSubmit((data) => { /* TODO: wire forgot-password request */ })}>
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                             Email address

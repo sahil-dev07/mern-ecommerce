@@ -1,0 +1,43 @@
+# Netlify configuration for the ecommerce SPA (Vite frontend).
+#
+# This repo is a monorepo: `ecommerce/` (this frontend) + `ecommerce-backend/`
+# (Express API on Render). Because this netlify.toml lives in the `ecommerce/`
+# subdirectory — NOT the repo root — Netlify only discovers it once the site's
+# **base directory** is set to `ecommerce` in the Netlify UI (Site settings →
+# Build & deploy → Base directory). That UI step is required; see the manual
+# steps in repos/MODERNIZATION_PLAN.md (Phase F).
+#
+# Path resolution: every path below is relative to the base directory. `base`
+# itself is relative to the repo root (so `ecommerce`, not `ecommerce/ecommerce`
+# — no double-nesting), and `publish` is relative to `base` (→ ecommerce/build).
+
+[build]
+  # Build base = the ecommerce/ subdir (repo-root-relative; matches the UI base).
+  base = "ecommerce"
+  # Vite build; outputs to build/ (see vite.config.js `outDir: 'build'`).
+  command = "npm run build"
+  # Publish dir, relative to base → ecommerce/build.
+  publish = "build"
+
+[build.environment]
+  # Match ecommerce/.node-version (Node 22). Set here too so the build is
+  # pinned even if Netlify ignores .node-version.
+  NODE_VERSION = "22"
+
+# SPA fallback: client-side routing (react-router) owns deep links like
+# /product-detail/:id and /orders. Netlify serves a matching static file first
+# (JS/CSS/images in build/ win), and only rewrites to index.html when no file
+# matches — so a hard refresh or shared deep link renders the app instead of 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# NOTE — environment variables (set in the Netlify UI, NOT committed):
+#   VITE_API_URL = https://ecommerce-lun6.onrender.com
+#     Vite inlines this at build time (src/app/constants.js falls back to the
+#     same Render URL if unset, so the build still works without it — but set it
+#     explicitly so the source of truth is the dashboard).
+# Backend CORS is handled on RENDER, not here: set FRONTEND_ORIGIN=<this Netlify
+# origin> on the Render service. ecommerce-backend/app.js already reads
+# FRONTEND_ORIGIN (comma-separated) into its allowlist — no backend code change.

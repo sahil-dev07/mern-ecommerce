@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isRejected } from '@reduxjs/toolkit';
 import { createOrder, fetchAllOrders, updateOrder } from './orderAPI';
 
 const initialState = {
@@ -6,46 +6,53 @@ const initialState = {
   status: 'idle',
   currentOrder: null,
   totalOrders: 0,
+  error: null, // last failed-request error { status, message }
 };
-
 
 export const createOrderAsync = createAsyncThunk(
   'order/createOrder',
-  async (order) => {
-    const response = await createOrder(order);
-
-    return response.data;
+  async (order, { rejectWithValue }) => {
+    try {
+      const response = await createOrder(order);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue({ status: err.status, message: err.message });
+    }
   }
 );
 
 export const updateOrderAsync = createAsyncThunk(
   'order/updateOrder',
-  async (order) => {
-    const response = await updateOrder(order);
-
-    return response.data;
+  async (order, { rejectWithValue }) => {
+    try {
+      const response = await updateOrder(order);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue({ status: err.status, message: err.message });
+    }
   }
 );
 
 export const fetchAllOrderAsync = createAsyncThunk(
   'order/fetchAllOrders',
-  async ({ sort, pagination }) => {
-    const response = await fetchAllOrders(sort, pagination);
-
-    return response.data;
+  async ({ sort, pagination }, { rejectWithValue }) => {
+    try {
+      const response = await fetchAllOrders(sort, pagination);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue({ status: err.status, message: err.message });
+    }
   }
 );
 
 export const orderSlice = createSlice({
   name: 'order',
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     resetOrder: (state) => {
       state.currentOrder = null
     },
   },
-
   extraReducers: (builder) => {
     builder
       .addCase(createOrderAsync.pending, (state) => {
@@ -69,9 +76,17 @@ export const orderSlice = createSlice({
       })
       .addCase(updateOrderAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.orders.findIndex(order => order.id === action.payload.id)
+        const index = state.orders.findIndex((order) => order.id === action.payload.id)
         state.orders[index] = action.payload
       })
+      // Unstick status + record error on any rejected order thunk.
+      .addMatcher(
+        isRejected(createOrderAsync, updateOrderAsync, fetchAllOrderAsync),
+        (state, action) => {
+          state.status = 'failed';
+          state.error = action.payload ?? { message: action.error?.message };
+        }
+      );
   },
 });
 
@@ -80,9 +95,6 @@ export const { resetOrder } = orderSlice.actions;
 export const selectCurrentOrder = (state) => state.order.currentOrder
 export const selectOrders = (state) => state.order.orders
 export const selectTotalOrders = (state) => state.order.totalOrders
+export const selectOrderError = (state) => state.order.error
 
 export default orderSlice.reducer;
-
-
-// /products?_sort=price&_order=asc&_page=1&_limit=9&
-// /orders?_sort=id&_order=decsc&_page=1&_limit=9&

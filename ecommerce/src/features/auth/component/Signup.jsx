@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { createUserAsync, selectLoggedInUser } from '../authSlice';
+import { createUserAsync, selectError, selectLoggedInUser } from '../authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -9,6 +9,7 @@ export default function Signup() {
     const dispatch = useDispatch()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const user = useSelector(selectLoggedInUser)
+    const error = useSelector(selectError)
     return (
         <>
 
@@ -55,9 +56,9 @@ export default function Signup() {
                                     id="email"
                                     {...register('email', {
                                         required: "Email is required"
-                                        // , pattern: { value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi, message: "Invalid Email" } 
+                                        // , pattern: { value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi, message: "Invalid Email" }
                                     })}
-                                    type="text"
+                                    type="email"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                                 {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
@@ -77,9 +78,7 @@ export default function Signup() {
                                         required: "Password is required",
                                         pattern: {
                                             value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-                                            message: `- at least 8 characters \n
-                                      - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number \n
-                                      - Can contain special characters`,
+                                            message: `- at least 8 characters \n - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number \n - Can contain special characters`,
                                         }
                                     })}
                                     type="password"
@@ -109,6 +108,7 @@ export default function Signup() {
                                 />
                                 {errors.confirmPassword && <p className='text-red-500'>{errors.confirmPassword.message}</p>}
                             </div>
+                            {error && <p className='text-red-500'>{error.message}</p>}
                         </div>
 
                         <div>
@@ -116,7 +116,7 @@ export default function Signup() {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Sign in
+                                Sign up
                             </button>
                         </div>
                     </form>

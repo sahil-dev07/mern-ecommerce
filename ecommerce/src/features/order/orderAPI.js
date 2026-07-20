@@ -1,54 +1,28 @@
-import { END_POINT } from "../../app/constants";
+import { apiClient } from '../../app/apiClient'
 
-export function createOrder(order) {
-  return new Promise(async (resolve) => {
-    // console.log(order)
-    const res = await fetch(END_POINT + '/orders', {
-      method: "POST",
-      body: JSON.stringify(order),
-      headers: { 'content-type': 'application/json' }
-    })
-    //TODO: on server it will only return relevent information
-    const data = await res.json()
-    resolve({ data })
-  }
-  );
+// POST /orders — place an order
+export async function createOrder(order) {
+  const { data } = await apiClient.post('/orders', order)
+  return { data }
 }
 
-export function updateOrder(order) {
-  return new Promise(async (resolve) => {
-    // console.log(order)
-    const res = await fetch(END_POINT + '/orders/' + order.id, {
-      method: "PATCH",
-      body: JSON.stringify(order),
-      headers: { 'content-type': 'application/json' }
-    })
-    //TODO: on server it will only return relevent information
-    const data = await res.json()
-    resolve({ data })
-  }
-  );
+// PATCH /orders/:id — admin updates order status
+export async function updateOrder(order) {
+  const { data } = await apiClient.patch(`/orders/${order.id}`, order)
+  return { data }
 }
 
-
-// fetch all order
-export function fetchAllOrders(sort, pagination) {
+// GET /orders?<sort><pagination> — admin order list; total count comes from the
+// X-Total-Count response header (server-side pagination).
+export async function fetchAllOrders(sort, pagination) {
   let queryString = ''
-
   for (let key in sort) {
     queryString += `${key}=${sort[key]}&`
   }
   for (let key in pagination) {
     queryString += `${key}=${pagination[key]}&`
   }
-
-
-  return new Promise(async (resolve) => {
-    const response = await fetch(END_POINT + '/orders?' + queryString)
-    // console.log('http://localhost:8080/orders?' + queryString)
-    const data = await response.json()
-    const totalOrders = response.headers.get("X-Total-Count")
-    resolve({ data: { orders: data, totalOrders: +totalOrders } })
-
-  })
+  const { data, headers } = await apiClient.get(`/orders?${queryString}`)
+  const totalOrders = headers.get('X-Total-Count')
+  return { data: { orders: data, totalOrders: +totalOrders } }
 }

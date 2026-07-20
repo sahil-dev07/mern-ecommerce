@@ -1,83 +1,37 @@
-import { END_POINT } from "../../app/constants";
+import { apiClient } from '../../app/apiClient'
 
-export function addToCart(item) {
-  return new Promise(async (resolve) => {
-    // console.log(item)
-    const res = await fetch(END_POINT + '/cart', {
-      method: "POST",
-      body: JSON.stringify(item),
-      headers: { 'content-type': 'application/json' }
-    })
-    //TODO: on server it will only return relevent information
-    const data = await res.json()
-    resolve({ data })
-  }
-  );
+// POST /cart — add an item to the cart
+export async function addToCart(item) {
+  const { data } = await apiClient.post('/cart', item)
+  return { data }
 }
 
-
-// fetch items by id for cart
-export function fetchItemsByUserId(UserId) {
-  return new Promise(async (resolve) => {
-    const response = await fetch(`${END_POINT}/cart?user=` + UserId)
-    const data = await response.json()
-    // console.log(data)
-    resolve({ data })
-  }
-  );
+// GET /cart?user=:id — all cart items for a user
+export async function fetchItemsByUserId(userId) {
+  const { data } = await apiClient.get(`/cart?user=${userId}`)
+  return { data }
 }
 
-// Update cart
-export function updateCart(update) {
-  return new Promise(async (resolve) => {
-    // console.log(update)
-    const res = await fetch(END_POINT + '/cart/', {
-      method: "PATCH",
-      body: JSON.stringify(update),
-      headers: { 'content-type': 'application/json' }
-    })
-    //TODO: on server it will only return relevent information
-    const data = await res.json()
-    resolve({ data })
-  }
-  );
+// PATCH /cart/ — update a cart item (quantity)
+export async function updateCart(update) {
+  const { data } = await apiClient.patch('/cart/', update)
+  return { data }
 }
 
-// delete Item from cart
-export function deleteItemFromCart({ productId, userId }) {
-  return new Promise(async (resolve) => {
-    // console.log(item)
-    await fetch(END_POINT + '/cart?product=' + productId + "&user=" + userId, {
-      method: "DELETE",
-      headers: { 'content-type': 'application/json' }
-    })
-
-    // console.log("in delete cart api  ", { productId, userId })
-    //TODO: on server it will only return relevent information
-    // const data = await res.json()
-    resolve({ data: { id: productId } })
-  }
-  );
+// DELETE /cart?product=&user= — remove one item. Server body is ignored; the
+// slice only needs the removed product id to splice it out of state.
+export async function deleteItemFromCart({ productId, userId }) {
+  await apiClient.delete(`/cart?product=${productId}&user=${userId}`)
+  return { data: { id: productId } }
 }
 
-// delete Cart 
+// Empty the cart: fetch the user's items, then delete each. Client-side loop —
+// there's no bulk-delete endpoint.
 export async function resetCart(userId) {
-
-  // get All items of user's cart and then delete each
-  return new Promise(async (resolve) => {
-    console.log("reset cart cartapi")
-
-    console.log("in cart reset before fetchitem call")
-    const response = await fetchItemsByUserId(userId)
-    const items = response.data
-    console.log("In cart reset")
-
-    for (let item of items) {
-      await deleteItemFromCart({ productId: item.product.id, userId: userId })
-      // console.log(item)
-    }
-    resolve({ status: 'success' })
-  })
-
+  const response = await fetchItemsByUserId(userId)
+  const items = response.data
+  for (let item of items) {
+    await deleteItemFromCart({ productId: item.product.id, userId })
+  }
+  return { status: 'success' }
 }
-
