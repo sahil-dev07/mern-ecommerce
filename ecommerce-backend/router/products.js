@@ -1,12 +1,15 @@
 const express = require('express')
 const { createProduct, fetchAllProducts, fetchProductById, updateProduct } = require('../controller/product')
+const validate = require('../middleware/validate')
+const { createProductBody, updateProductBody, productListQuery } = require('../validators')
 
 const router = express.Router()
 
-// /products is already added in the base path
-router.post('/', createProduct)
-    .get('/', fetchAllProducts)
+// /products is added in app.js.
+router
+    .post('/', validate(createProductBody), createProduct)
+    .get('/', validate(productListQuery, 'query'), fetchAllProducts)
     .get('/:id', fetchProductById)
-    .patch('/:id', updateProduct)
+    .patch('/:id', validate(updateProductBody), updateProduct)
 
 exports.router = router
