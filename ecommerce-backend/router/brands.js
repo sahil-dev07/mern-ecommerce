@@ -1,10 +1,11 @@
 const express = require('express')
 const { fetchBrands, createBrand } = require('../controller/brand')
-
+const validate = require('../middleware/validate')
+const { brandBody } = require('../validators')
 
 const router = express.Router()
 
-// /brands is already added in the base path
-router.get('/', fetchBrands).post('/', createBrand)
+// /brands is added in app.js.
+router.get('/', fetchBrands).post('/', validate(brandBody), createBrand)
 
 exports.router = router
