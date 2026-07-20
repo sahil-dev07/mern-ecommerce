@@ -55,6 +55,24 @@ export default [
     rules: { ...js.configs.recommended.rules },
   },
 
+  // Vitest test files + setup — provide the test globals (globals:true in vitest).
+  {
+    files: ['**/*.test.{js,jsx}', 'src/setupTests.js'],
+    languageOptions: {
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+        vi: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+      },
+    },
+  },
+
   // Must be last: turns off stylistic rules that would fight Prettier.
   prettier,
 ]
