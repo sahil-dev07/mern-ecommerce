@@ -7,7 +7,7 @@ import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
 import { discountedPrice } from '../app/constants';
-import HashLoader from "react-spinners/HashLoader"
+import { HashLoader } from "react-spinners"
 
 
 const Checkout = () => {

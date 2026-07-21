@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { selectLoggedInUser } from '../../auth/authSlice'
 import { addToCartAsync, selectItems } from '../../cart/cartSlice'
 import { discountedPrice } from '../../../app/constants'
-import HashLoader from "react-spinners/HashLoader"
+import { HashLoader } from "react-spinners"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

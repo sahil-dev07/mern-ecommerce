@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import HashLoader from "react-spinners/HashLoader"
+import { HashLoader } from "react-spinners"
 import { discountedPrice } from '../../../app/constants';
 import { StarIcon } from '@heroicons/react/20/solid'
 
