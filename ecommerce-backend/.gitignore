@@ -1,3 +1,6 @@
 node_modules
 
 .env
+
+# Compiled frontend is deployed on Netlify, not served from here (Phase H).
+build

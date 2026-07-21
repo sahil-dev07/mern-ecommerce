@@ -1,4 +1,3 @@
-const path = require('path')
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -27,23 +26,24 @@ const app = express()
 app.set('trust proxy', 1)
 
 // CORS allowlist — a SUPERSET of every origin used during the migration: the
-// Render origin (which serves build/ today), local dev, plus any FRONTEND_ORIGIN
-// entries (the Netlify frontend, added in Phase F). Tightened to just the
-// frontend origin in Phase G once cutover is confirmed.
+// Phase G tighten: the allowlist is now the frontend origin(s) from FRONTEND_ORIGIN
+// (the live Netlify site, comma-separated) plus local dev ports only. The Render
+// origin that used to serve build/ was DROPPED — real users are on Netlify now, and
+// Phase H removes build/ from Render entirely. Requests with no Origin header
+// (same-origin / non-browser) are still allowed by the callback below.
 const allowlist = (process.env.FRONTEND_ORIGIN || '')
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean)
     .concat([
-        'https://ecommerce-lun6.onrender.com',
         'http://localhost:5173',
         'http://localhost:3000',
     ])
 
 // --- Middleware ---
-// Security headers. CSP is disabled for now because this same server also serves
-// the compiled React SPA (build/), whose inline assets a strict default CSP would
-// block. Re-enable a tailored CSP after the frontend moves to Netlify (Phase H).
+// Security headers. CSP stays off: this is now an API-only server (Phase H removed
+// the served SPA), so responses are JSON and a default CSP would restrict nothing
+// meaningful. Enabling a default CSP here is a safe follow-up, kept out of this flip.
 app.use(helmet({ contentSecurityPolicy: false }))
 
 // Request logging. pino-http logs method/url/status/latency only — never bodies,
@@ -68,13 +68,10 @@ app.use(
 // Parse JSON bodies with a size cap to blunt oversized-payload abuse.
 app.use(express.json({ limit: '100kb' }))
 
-// Serve the committed compiled frontend (build/).
-// NOTE (Phase H): this coupling is removed once the frontend is hosted on Netlify.
-app.use(express.static(path.join(__dirname, 'build')))
-
 // --- Routes ---
-// Health check for uptime probes / boot-checks. Defined before the SPA-serving
-// static middleware would otherwise shadow "/", so it always returns JSON.
+// Phase H: the frontend now lives on Netlify, so this server no longer serves the
+// compiled SPA (express.static('build') removed, build/ untracked). Render runs the
+// API only. Health check for uptime probes / boot-checks.
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' })
 })
