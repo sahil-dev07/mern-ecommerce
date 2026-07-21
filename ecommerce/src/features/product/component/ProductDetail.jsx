@@ -5,7 +5,7 @@ import { fetchProductByIdAsync, selectProductListStatus, selectedProductById } f
 import { useParams } from 'react-router-dom'
 import { selectLoggedInUser } from '../../auth/authSlice'
 import { addToCartAsync, selectItems } from '../../cart/cartSlice'
-import { discountedPrice } from '../../../app/constants'
+import { discountedPrice, onImageError } from '../../../app/constants'
 import { HashLoader } from "react-spinners"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -106,6 +106,7 @@ export default function ProductDetail() {
                         <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                             <img
                                 src={product.images[0]}
+                                onError={onImageError}
                                 alt={product.title}
                                 className="h-full w-full object-cover object-center"
                             />
@@ -114,6 +115,7 @@ export default function ProductDetail() {
                             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                                 <img
                                     src={product.images[1]}
+                                    onError={onImageError}
                                     alt={product.title}
                                     className="h-full w-full object-cover object-center"
                                 />
@@ -121,6 +123,7 @@ export default function ProductDetail() {
                             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
                                 <img
                                     src={product.images[2]}
+                                    onError={onImageError}
                                     alt={product.title}
                                     className="h-full w-full object-cover object-center"
                                 />
@@ -129,6 +132,7 @@ export default function ProductDetail() {
                         <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                             <img
                                 src={product.images[3]}
+                                onError={onImageError}
                                 alt={product.title}
                                 className="h-full w-full object-cover object-center"
                             />

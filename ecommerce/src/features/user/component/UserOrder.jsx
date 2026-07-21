@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders } from '../userSlice';
-import { discountedPrice } from '../../../app/constants';
+import { discountedPrice, onImageError } from '../../../app/constants';
 
 const UserOrder = () => {
     const dispatch = useDispatch()
@@ -34,6 +34,7 @@ const UserOrder = () => {
                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                     <img
                                                         src={item.product.thumbnail}
+                                                        onError={onImageError}
                                                         alt={item.product.title}
                                                         className="h-full w-full object-cover object-center"
                                                     />
