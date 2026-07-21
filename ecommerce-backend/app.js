@@ -27,15 +27,16 @@ const app = express()
 app.set('trust proxy', 1)
 
 // CORS allowlist — a SUPERSET of every origin used during the migration: the
-// Render origin (which serves build/ today), local dev, plus any FRONTEND_ORIGIN
-// entries (the Netlify frontend, added in Phase F). Tightened to just the
-// frontend origin in Phase G once cutover is confirmed.
+// Phase G tighten: the allowlist is now the frontend origin(s) from FRONTEND_ORIGIN
+// (the live Netlify site, comma-separated) plus local dev ports only. The Render
+// origin that used to serve build/ was DROPPED — real users are on Netlify now, and
+// Phase H removes build/ from Render entirely. Requests with no Origin header
+// (same-origin / non-browser) are still allowed by the callback below.
 const allowlist = (process.env.FRONTEND_ORIGIN || '')
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean)
     .concat([
-        'https://ecommerce-lun6.onrender.com',
         'http://localhost:5173',
         'http://localhost:3000',
     ])
