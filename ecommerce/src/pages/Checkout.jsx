@@ -7,7 +7,7 @@ import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
 import { discountedPrice } from '../app/constants';
-import HashLoader from "react-spinners/HashLoader"
+import { HashLoader } from "react-spinners"
 
 
 const Checkout = () => {
@@ -69,6 +69,19 @@ const Checkout = () => {
         }
     };
 
+
+    // userInfo is fetched asynchronously on load and is NOT in the redux-persist
+    // whitelist (only `auth` is), so on a hard refresh / direct link to /checkout
+    // it is briefly null until App's re-fetch resolves. Render a loader until it
+    // arrives instead of dereferencing user.addresses below (which would crash the
+    // whole page). All hooks above have already run, so this early return is safe.
+    if (!user) {
+        return (
+            <div className="flex min-h-[60vh] items-center justify-center">
+                <HashLoader color="#4F46E5" />
+            </div>
+        );
+    }
 
     return (
         <>

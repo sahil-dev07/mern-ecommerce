@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { deleteItemFromCartAsync, selectCartStatus, selectItems, updateCartAsync } from './cartSlice';
 import { discountedPrice } from '../../app/constants';
-import HashLoader from "react-spinners/HashLoader"
+import { HashLoader } from "react-spinners"
 import Modal from '../common/Modal';
 import { selectLoggedInUser } from '../auth/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
