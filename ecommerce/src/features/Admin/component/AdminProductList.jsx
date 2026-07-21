@@ -8,7 +8,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon, StarIcon } from '@heroicons/react/20/solid'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
-import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants';
+import { ITEMS_PER_PAGE, discountedPrice, onImageError } from '../../../app/constants';
 
 export default function AdminProductList() {
 
@@ -450,6 +450,7 @@ function ProductGrid({ products }) {
                   <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
                     <img
                       src={product.thumbnail}
+                      onError={onImageError}
                       alt={product.title}
                       className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                     />

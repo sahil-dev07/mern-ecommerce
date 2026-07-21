@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
-import { discountedPrice } from '../app/constants';
+import { discountedPrice, onImageError } from '../app/constants';
 import { HashLoader } from "react-spinners"
 
 
@@ -389,6 +389,7 @@ const Checkout = () => {
                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                     <img
                                                         src={item.product.thumbnail}
+                                                        onError={onImageError}
                                                         alt={item.product.title}
                                                         className="h-full w-full object-cover object-center"
                                                     />

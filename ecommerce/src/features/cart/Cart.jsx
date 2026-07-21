@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { deleteItemFromCartAsync, selectCartStatus, selectItems, updateCartAsync } from './cartSlice';
-import { discountedPrice } from '../../app/constants';
+import { discountedPrice, onImageError } from '../../app/constants';
 import { HashLoader } from "react-spinners"
 import Modal from '../common/Modal';
 import { selectLoggedInUser } from '../auth/authSlice';
@@ -65,6 +65,7 @@ export default function Cart() {
                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                     <img
                       src={item.product.thumbnail}
+                      onError={onImageError}
                       alt={item.product.title}
                       className="h-full w-full object-cover object-center"
                     />
