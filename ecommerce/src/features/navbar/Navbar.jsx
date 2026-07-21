@@ -29,6 +29,12 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
+// Inline SVG (data URI) gray user silhouette. Backend user object has no
+// imageUrl field, so the avatar always falls back to this — prevents the
+// broken/empty <img> that previously showed in the top-right menu button.
+const DEFAULT_AVATAR =
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+
 
 
 
@@ -45,10 +51,12 @@ const Navbar = ({ children }) => {
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
                                         <Link to='/'>
+                                            {/* Logo served from Vite public/ dir (root path). Was a dead
+                                                tailwindui.com URL that now 404s, causing a broken image. */}
                                             <img
                                                 className="h-8 w-8"
-                                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                                alt="Your Company"
+                                                src="/logo192.png"
+                                                alt="E-Commerce"
                                             />
                                         </Link>
                                     </div>
@@ -95,7 +103,13 @@ const Navbar = ({ children }) => {
                                                 <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                     <span className="absolute -inset-1.5" />
                                                     <span className="sr-only">Open user menu</span>
-                                                    <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                                                    {/* Fallback to DEFAULT_AVATAR when user has no imageUrl or it fails to load */}
+                                                    <img
+                                                        className="h-8 w-8 rounded-full bg-gray-700"
+                                                        src={user?.imageUrl || DEFAULT_AVATAR}
+                                                        onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR }}
+                                                        alt=""
+                                                    />
                                                 </Menu.Button>
                                             </div>
                                             <Transition
@@ -166,7 +180,13 @@ const Navbar = ({ children }) => {
                             <div className="border-t border-gray-700 pb-3 pt-4">
                                 <div className="flex items-center px-5">
                                     <div className="flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                                        {/* Same avatar fallback as the desktop menu button */}
+                                        <img
+                                            className="h-10 w-10 rounded-full bg-gray-700"
+                                            src={user?.imageUrl || DEFAULT_AVATAR}
+                                            onError={(e) => { e.currentTarget.src = DEFAULT_AVATAR }}
+                                            alt=""
+                                        />
                                     </div>
                                     <div className="ml-3">
                                         <div className="text-base font-medium leading-none text-white">{user.name}</div>
@@ -190,8 +210,8 @@ const Navbar = ({ children }) => {
                                     {userNavigation.map((item) => (
                                         <Disclosure.Button
                                             key={item.name}
-                                            as="a"
-                                            href={item.href}
+                                            as={Link}
+                                            to={item.link}
                                             className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                                         >
                                             {item.name}
