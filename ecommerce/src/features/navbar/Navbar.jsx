@@ -22,7 +22,10 @@ const navigation = [
 const userNavigation = [
     { name: 'Your Profile', link: '/profile' },
     { name: 'Your Orders', link: '/orders' },
-    { name: 'Sign out', link: '/login' },
+    // Route to /logout (Protected -> Logout component): dispatches signOutAsync
+    // to clear the token + loggedInUser, then redirects to /login. Linking
+    // straight to /login never logs out — Login bounces the still-authed user home.
+    { name: 'Sign out', link: '/logout' },
 ]
 
 function classNames(...classes) {

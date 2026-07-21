@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { fetchAllOrderAsync, selectOrders, selectTotalOrders, updateOrderAsync } from '../../order/orderSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants'
+import { ITEMS_PER_PAGE, discountedPrice, onImageError } from '../../../app/constants'
 import {
     PencilIcon,
     EyeIcon,
@@ -128,6 +128,7 @@ const AdminOrder = () => {
                                                             <img
                                                                 className="w-6 h-6 rounded-full"
                                                                 src={item.product.thumbnail}
+                                                                onError={onImageError}
                                                                 alt="thumbnail"
                                                             />
                                                         </div>
