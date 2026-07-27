@@ -40,6 +40,24 @@ export default {
           600: '#D97706',
         },
       },
+      // Tailwind's preflight applies this to <html>, so it is the single source of
+      // truth for the app's typeface — no font-family declaration in index.css.
+      // "Variable" is part of the family name the @fontsource-variable package
+      // registers; the non-variable package would be plain "Plus Jakarta Sans".
+      // The fallbacks are the previous stack, so a failed font load degrades to
+      // exactly what the app looked like before.
+      fontFamily: {
+        sans: [
+          '"Plus Jakarta Sans Variable"',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'sans-serif',
+        ],
+      },
       // Named rather than a raw rounded-xl so the card radius can move in one
       // place once the storefront card is redesigned (Phase 6).
       borderRadius: {
