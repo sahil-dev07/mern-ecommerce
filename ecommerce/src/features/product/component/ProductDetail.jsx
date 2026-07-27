@@ -5,7 +5,7 @@ import { fetchProductByIdAsync, selectProductListStatus, selectedProductById } f
 import { useParams } from 'react-router-dom'
 import { selectLoggedInUser } from '../../auth/authSlice'
 import { addToCartAsync, selectItems } from '../../cart/cartSlice'
-import { discountedPrice, onImageError } from '../../../app/constants'
+import { LOADER_COLOR, discountedPrice, onImageError } from '../../../app/constants'
 import { HashLoader } from "react-spinners"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -64,9 +64,8 @@ export default function ProductDetail() {
             {status === 'loading' ?
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                     <HashLoader
-                        // color='#464FE5'
                         size='120px'
-                        color="#36d7b7"
+                        color={LOADER_COLOR}
                     />
                 </div>
                 : null}

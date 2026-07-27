@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { deleteItemFromCartAsync, selectCartStatus, selectItems, updateCartAsync } from './cartSlice';
-import { discountedPrice, onImageError } from '../../app/constants';
+import { LOADER_COLOR, discountedPrice, onImageError } from '../../app/constants';
 import { HashLoader } from "react-spinners"
 import Modal from '../common/Modal';
 import { selectLoggedInUser } from '../auth/authSlice';
@@ -53,9 +53,8 @@ export default function Cart() {
             {status === 'loading' ?
               <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <HashLoader
-                  // color='#464FE5'
                   size='120px'
-                  color="#36d7b7"
+                  color={LOADER_COLOR}
                 />
               </div>
               : null}

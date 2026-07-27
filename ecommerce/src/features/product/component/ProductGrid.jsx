@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { HashLoader } from "react-spinners"
-import { discountedPrice, onImageError } from '../../../app/constants';
+import { LOADER_COLOR, discountedPrice, onImageError } from '../../../app/constants';
 import { StarIcon } from '@heroicons/react/20/solid'
 
 export default function ProductGrid({ products, status }) {
@@ -9,9 +9,8 @@ export default function ProductGrid({ products, status }) {
             {status === 'loading' ?
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                     <HashLoader
-                        // color='#464FE5'
                         size='120px'
-                        color="#36d7b7"
+                        color={LOADER_COLOR}
                     />
                 </div>
                 : null}

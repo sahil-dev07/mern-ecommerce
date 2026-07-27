@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
+import Logo from '../../common/Logo';
 
 
 
@@ -15,11 +16,7 @@ export default function Login() {
 
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img
-                    className="mx-auto h-10 w-auto"
-                    src="/logo192.png"
-                    alt="E-Commerce"
-                />
+                <Logo className="mx-auto h-10 text-gray-900" />
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Enter email to reset password
                 </h2>

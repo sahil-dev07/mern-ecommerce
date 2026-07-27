@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
-import { discountedPrice, onImageError } from '../app/constants';
+import { LOADER_COLOR, discountedPrice, onImageError } from '../app/constants';
 import { HashLoader } from "react-spinners"
 
 
@@ -78,7 +78,7 @@ const Checkout = () => {
     if (!user) {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
-                <HashLoader color="#4F46E5" />
+                <HashLoader color={LOADER_COLOR} />
             </div>
         );
     }
@@ -377,9 +377,8 @@ const Checkout = () => {
                                     {status === 'loading' ?
                                         <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                                             <HashLoader
-                                                // color='#464FE5'
                                                 size='80px'
-                                                color="#36d7b7"
+                                                color={LOADER_COLOR}
                                             />
                                         </div>
                                         : null}

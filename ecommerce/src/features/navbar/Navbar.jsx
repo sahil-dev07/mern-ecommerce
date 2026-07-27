@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectItems } from '../cart/cartSlice'
 import { selectLoggedInUser } from '../auth/authSlice'
+import Logo from '../common/Logo'
 
 
 // const user = {
@@ -54,13 +55,10 @@ const Navbar = ({ children }) => {
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
                                         <Link to='/'>
-                                            {/* Logo served from Vite public/ dir (root path). Was a dead
-                                                tailwindui.com URL that now 404s, causing a broken image. */}
-                                            <img
-                                                className="h-8 w-8"
-                                                src="/logo192.png"
-                                                alt="E-Commerce"
-                                            />
+                                            {/* Inline wordmark — no image request, so nothing here can 404.
+                                                text-white colours the "Kartly" text; the bag glyph is
+                                                brand-500 from inside Logo. */}
+                                            <Logo className="h-8 text-white" />
                                         </Link>
                                     </div>
                                     <div className="hidden md:block">
