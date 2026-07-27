@@ -57,8 +57,11 @@ const CART_LINE = { id: 'ci1', quantity: 1, product: PRODUCT }
 // Mirrors the real rootReducer (store.js:16-22) minus redux-persist — the persist
 // wrapper needs localStorage plumbing and pulls in the store<->authMiddleware
 // circular import, neither of which this test is about.
+//
+// `role` of null means signed out: both loggedInUser and userInfo are null, which
+// is what the guards branch on.
 function makeStore(role) {
-    const account = { id: 'u1', role, name: 'QA', email: 'qa@example.com' }
+    const account = role === null ? null : { id: 'u1', role, name: 'QA', email: 'qa@example.com' }
     return configureStore({
         reducer: {
             product: productReducer,
@@ -76,7 +79,11 @@ function makeStore(role) {
             cart: { items: [CART_LINE], status: 'idle', error: null },
             order: { orders: [], status: 'idle', currentOrder: null, totalOrders: 0, error: null },
             // addresses: [] matters — Checkout and UserProfile spread it unguarded.
-            user: { userInfo: { ...account, addresses: [] }, status: 'idle', error: null },
+            user: {
+                userInfo: account && { ...account, addresses: [] },
+                status: 'idle',
+                error: null,
+            },
         },
     })
 }
@@ -125,6 +132,66 @@ describe.each(['user', 'admin'])('route table as a %s', (role) => {
         // not "this specific page rendered" — role-specific routing is covered by
         // Protected.test.jsx and ProtectedAdmin.test.jsx.
         expect(container).not.toBeEmptyDOMElement()
+    })
+})
+
+// The site chrome (nav, cart badge, account menu) must be present on every page a
+// signed-in shopper can reach, and absent from the signed-out auth screens.
+//
+// /cart, /checkout and /order-success rendered NO chrome at all before Phase 1 —
+// the shopper lost the nav for the entire second half of the funnel, on the three
+// screens where abandoning costs the most. Phase 1 wraps them in the same <Navbar>
+// every other page already used.
+//
+// The probe is the mobile menu button rather than the logo or a nav link, because
+// Phase 2 replaces the logo with an SVG wordmark and Phase 10 changes which links
+// render per role — the disclosure button survives both, and survives Phase 3
+// hoisting Navbar into a <Layout> (Layout nests INSIDE Navbar).
+const hasChrome = () => screen.queryByRole('button', { name: 'Open main menu' }) !== null
+
+describe('site chrome', () => {
+    const SHOPPER_PATHS = [
+        '/',
+        '/cart',           // regression-locked by Phase 1
+        '/checkout',       // regression-locked by Phase 1
+        '/order-success/o1', // regression-locked by Phase 1
+        '/product-detail/p1',
+        '/orders',
+        '/profile',
+    ]
+
+    it.each(SHOPPER_PATHS)('renders the navbar on %s', (path) => {
+        renderRoute(path, 'user')
+        expect(hasChrome()).toBe(true)
+    })
+
+    const ADMIN_PATHS = [
+        '/admin',
+        '/admin/product-detail/p1',
+        '/admin/product-form',
+        '/admin/product-form/edit/p1',
+        '/admin/orders',
+    ]
+
+    it.each(ADMIN_PATHS)('renders the navbar on %s', (path) => {
+        renderRoute(path, 'admin')
+        expect(hasChrome()).toBe(true)
+    })
+
+    // The other half of the contract, and a standing guard for Phase 3: Navbar
+    // dereferences user.role unguarded, so it must never MOUNT for a signed-out
+    // visitor. Phase 3 nests <Layout> inside <Protected> precisely so this stays true.
+    const PUBLIC_PATHS = ['/login', '/signup', '/forgot-password']
+
+    it.each(PUBLIC_PATHS)('renders no navbar on %s when signed out', (path) => {
+        renderRoute(path, null)
+        expect(hasChrome()).toBe(false)
+    })
+
+    it('sends a signed-out visitor from a protected path to /login, with no chrome', () => {
+        renderRoute('/cart', null)
+        expect(hasChrome()).toBe(false)
+        expect(screen.getByRole('heading', { name: 'Sign in to your account' })).toBeInTheDocument()
     })
 })
 
