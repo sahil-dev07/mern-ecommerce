@@ -33,7 +33,10 @@ import AdminProductFormPage from './pages/AdminProductFormPage';
 import AdminOrderPage from './pages/AdminOrderPage';
 
 
-const router = createBrowserRouter([
+// Exported so tests can mount the real route table with createMemoryRouter and
+// prove every path renders. Purely additive — createBrowserRouter below still
+// consumes the same array, so runtime routing is byte-for-byte unchanged.
+export const routes = [
   {
     path: "/",
     element: <Protected><Home /></Protected>,
@@ -105,7 +108,9 @@ const router = createBrowserRouter([
     path: "*",
     element: <PageNotFound />
   }
-], {
+];
+
+const router = createBrowserRouter(routes, {
   // Opt into React Router v7 behavior now to silence deprecation warnings and
   // smooth the eventual v6->v7 upgrade: wrap state updates in startTransition
   // and use relative splat-path resolution.
