@@ -40,7 +40,7 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
                             <span onClick={() => { if (page > 1) handlePage(page - 1) }} className="sr-only">Previous</span>
                             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
                         </div>
-                        {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
+                        {/* Current: "z-10 bg-brand-700 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
 
                         {Array.from({ length: totalPages }).map((ele, index) => (
 
@@ -48,7 +48,7 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
                                 key={index}
                                 onClick={(e) => handlePage(index + 1)}
                                 aria-current="page"
-                                className={`relative z-10 cursor-pointer inline-flex items-center ${index + 1 === page ? 'bg-indigo-600 text-white' : 'text-gray-400'}  px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                                className={`relative z-10 cursor-pointer inline-flex items-center ${index + 1 === page ? 'bg-brand-700 text-white' : 'text-gray-400'}  px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600`}
                             >
                                 {index + 1
                                 }

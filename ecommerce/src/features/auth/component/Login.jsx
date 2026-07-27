@@ -40,7 +40,7 @@ export default function Login() {
                   // , pattern: { value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi, message: "Invalid Email" }
                 })}
                 type="email"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
               />
               <p className='text-red-500'> {errors.email?.message} </p>
 
@@ -54,7 +54,7 @@ export default function Login() {
                 Password
               </label>
               <div className="text-sm">
-                <Link to='/forgot-password' className="font-semibold text-indigo-600 hover:text-indigo-500">
+                <Link to='/forgot-password' className="font-semibold text-brand-700 hover:text-brand-800">
                   Forgot password?
                 </Link>
               </div>
@@ -65,7 +65,7 @@ export default function Login() {
                 {...register('password', { required: "Password is required" })}
 
                 type="password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
               />
               {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
             </div>
@@ -75,7 +75,7 @@ export default function Login() {
           <div>
             <button
               type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="flex w-full justify-center rounded-md bg-brand-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
             >
               Sign in
             </button>
@@ -84,7 +84,7 @@ export default function Login() {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{' '}
-          <Link to="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          <Link to="/signup" className="font-semibold leading-6 text-brand-700 hover:text-brand-800">
             Create an Account
           </Link>
         </p>
