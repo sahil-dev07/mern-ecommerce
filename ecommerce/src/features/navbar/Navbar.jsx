@@ -42,6 +42,14 @@ const DEFAULT_AVATAR =
 
 
 
+// Every read of `user` below is optional-chained. Navbar is only ever rendered
+// today inside an already-redirected <Protected>, so a null user "cannot happen" —
+// but that is a property of where it is mounted, not of this component, and the
+// Layout refactor moves it. Guarding here first means the route change is not the
+// thing that has to be correct.
+//
+// Renders nothing user-specific when signed out rather than crashing: the nav
+// links disappear (no role matches), and the name/email lines go blank.
 const Navbar = ({ children }) => {
     const items = useSelector(selectItems)
     const user = useSelector(selectLoggedInUser)
@@ -64,7 +72,7 @@ const Navbar = ({ children }) => {
                                     <div className="hidden md:block">
                                         <div className="ml-10 flex items-baseline space-x-4">
                                             {navigation.map((item) => (
-                                                item[user.role] ? <Link
+                                                item[user?.role] ? <Link
                                                     key={item.name}
                                                     to={item.link}
                                                     className={classNames(
@@ -163,7 +171,7 @@ const Navbar = ({ children }) => {
                             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
 
                                 {navigation.map((item) => (
-                                    item[user.role] ? <Link
+                                    item[user?.role] ? <Link
                                         key={item.name}
                                         to={item.link}
                                         className={classNames(
@@ -190,8 +198,8 @@ const Navbar = ({ children }) => {
                                         />
                                     </div>
                                     <div className="ml-3">
-                                        <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                                        <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                                        <div className="text-base font-medium leading-none text-white">{user?.name}</div>
+                                        <div className="text-sm font-medium leading-none text-gray-400">{user?.email}</div>
                                     </div>
                                     <Link to='/cart'>
                                         <button

@@ -32,29 +32,27 @@ function renderNavbar(loggedInUser, items = []) {
 }
 
 describe('Navbar', () => {
-    // CURRENT BUG — the Phase 3 prerequisite.
-    // Navbar.jsx:69 and :168 do `item[user.role]`, and :195-196 read user.name /
-    // user.email, all unguarded. It survives today only because Navbar is always
-    // rendered *inside* an already-redirected <Protected>. The moment Phase 3 moves
-    // it into a parent Layout it would mount on logged-out routes and hard-crash.
+    // FIXED in Phase 3a — this assertion was inverted deliberately.
     //
-    // Phase 3a adds `user?.role` / `user?.name` / `user?.email`. When it lands this
-    // test MUST be flipped to `expect(() => renderNavbar(null)).not.toThrow()`.
-    it('CURRENT BUG: crashes when rendered with no logged-in user', () => {
-        // This render is SUPPOSED to blow up, and an uncaught React render error is
-        // reported twice: once by React through console.error (the component stack) and
-        // once by jsdom, which re-dispatches it as a window 'error' event. Both are
-        // muted for this one case so the suite's output stays clean — an error that
-        // shows up during any other test is then genuinely unexpected.
-        const consoleError = vi.spyOn(console, 'error').mockImplementation(() => { })
-        const swallow = (event) => event.preventDefault()
-        window.addEventListener('error', swallow)
-        try {
-            expect(() => renderNavbar(null)).toThrow(/Cannot read properties of null/)
-        } finally {
-            window.removeEventListener('error', swallow)
-            consoleError.mockRestore()
-        }
+    // Navbar.jsx did `item[user.role]` in two places and read user.name / user.email
+    // unguarded. That survived only because Navbar was always rendered inside an
+    // already-redirected <Protected> — a property of where it was mounted, not of
+    // the component. Phase 3b moves it into a route-level <Layout>, where it WILL
+    // mount on logged-out routes, so the guard had to land first.
+    //
+    // Keeping this test is the point: it is what stops the crash coming back if
+    // someone later "tidies up" the optional chaining as redundant.
+    it('renders without a logged-in user instead of crashing', () => {
+        expect(() => renderNavbar(null)).not.toThrow()
+    })
+
+    it('shows no role-gated nav links when signed out', () => {
+        renderNavbar(null)
+        // No role matches, so every entry in `navigation` is filtered out — the nav
+        // degrades to empty rather than rendering a shopper's or an admin's links.
+        expect(screen.queryByRole('link', { name: 'Products' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('link', { name: 'Products Admin' })).not.toBeInTheDocument()
+        expect(screen.queryByRole('link', { name: 'Orders' })).not.toBeInTheDocument()
     })
 
     it('shows the storefront link to a shopper', () => {
