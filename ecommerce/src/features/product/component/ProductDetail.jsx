@@ -5,7 +5,7 @@ import { fetchProductByIdAsync, selectProductListStatus, selectedProductById } f
 import { useParams } from 'react-router-dom'
 import { selectLoggedInUser } from '../../auth/authSlice'
 import { addToCartAsync, selectItems } from '../../cart/cartSlice'
-import { discountedPrice, onImageError } from '../../../app/constants'
+import { LOADER_COLOR, discountedPrice, onImageError } from '../../../app/constants'
 import { HashLoader } from "react-spinners"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -64,9 +64,8 @@ export default function ProductDetail() {
             {status === 'loading' ?
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                     <HashLoader
-                        // color='#464FE5'
                         size='120px'
-                        color="#36d7b7"
+                        color={LOADER_COLOR}
                     />
                 </div>
                 : null}
@@ -174,7 +173,7 @@ export default function ProductDetail() {
                                 <button
                                     onClick={handleCart}
                                     type="submit"
-                                    className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-brand-700 px-8 py-3 text-base font-medium text-white hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
                                 >
                                     Add to Cart
                                 </button>

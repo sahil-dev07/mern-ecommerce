@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
-import { discountedPrice, onImageError } from '../app/constants';
+import { LOADER_COLOR, discountedPrice, onImageError } from '../app/constants';
 import { HashLoader } from "react-spinners"
 
 
@@ -78,7 +78,7 @@ const Checkout = () => {
     if (!user) {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
-                <HashLoader color="#4F46E5" />
+                <HashLoader color={LOADER_COLOR} />
             </div>
         );
     }
@@ -133,7 +133,7 @@ const Checkout = () => {
                                                         required: 'name is required',
                                                     })}
                                                     id="name"
-                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
@@ -152,7 +152,7 @@ const Checkout = () => {
                                                         required: 'email is required',
                                                     })}
                                                     type="email"
-                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
@@ -171,7 +171,7 @@ const Checkout = () => {
                                                         required: 'phone is required',
                                                     })}
                                                     type="tel"
-                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
@@ -190,7 +190,7 @@ const Checkout = () => {
                                                         required: 'street is required',
                                                     })}
                                                     id="street"
-                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
@@ -210,7 +210,7 @@ const Checkout = () => {
                                                     })}
                                                     id="city"
                                                     autoComplete="address-level2"
-                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
@@ -230,7 +230,7 @@ const Checkout = () => {
                                                     })}
                                                     id="state"
                                                     autoComplete="address-level1"
-                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
@@ -249,7 +249,7 @@ const Checkout = () => {
                                                         required: 'pinCode is required',
                                                     })}
                                                     id="pinCode"
-                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
@@ -266,7 +266,7 @@ const Checkout = () => {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                        className="rounded-md bg-brand-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
                                     >
                                         Add Address
                                     </button>
@@ -291,7 +291,7 @@ const Checkout = () => {
                                                         name="address"
                                                         type="radio"
                                                         value={index}
-                                                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                        className="h-4 w-4 border-gray-300 text-brand-700 focus:ring-brand-600"
                                                     />
                                                     <div className="min-w-0 flex-auto">
                                                         <p className="text-sm font-semibold leading-6 text-gray-900">
@@ -334,7 +334,7 @@ const Checkout = () => {
                                                         value="cash"
                                                         type="radio"
                                                         checked={paymentMethod === "cash"}
-                                                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                        className="h-4 w-4 border-gray-300 text-brand-700 focus:ring-brand-600"
                                                     />
                                                     <label
                                                         htmlFor="cash"
@@ -351,7 +351,7 @@ const Checkout = () => {
                                                         checked={paymentMethod === "card"}
                                                         value="card"
                                                         type="radio"
-                                                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                        className="h-4 w-4 border-gray-300 text-brand-700 focus:ring-brand-600"
                                                     />
                                                     <label
                                                         htmlFor="card"
@@ -377,9 +377,8 @@ const Checkout = () => {
                                     {status === 'loading' ?
                                         <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                                             <HashLoader
-                                                // color='#464FE5'
                                                 size='80px'
-                                                color="#36d7b7"
+                                                color={LOADER_COLOR}
                                             />
                                         </div>
                                         : null}
@@ -431,7 +430,7 @@ const Checkout = () => {
                                                             <button
                                                                 onClick={(e) => handleRemove(e, item.product.id, user)}
                                                                 type="button"
-                                                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                className="font-medium text-brand-700 hover:text-brand-800"
                                                             >
                                                                 Remove
                                                             </button>
@@ -459,7 +458,7 @@ const Checkout = () => {
                                 <div className="mt-6">
                                     <div
                                         onClick={handleOrder}
-                                        className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                                        className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-brand-700 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-brand-800"
                                     >
                                         Order Now
                                     </div>
@@ -470,7 +469,7 @@ const Checkout = () => {
                                         <Link to="/">
                                             <button
                                                 type="button"
-                                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                className="font-medium text-brand-700 hover:text-brand-800"
                                             >
                                                 Continue Shopping
                                                 <span aria-hidden="true"> &rarr;</span>

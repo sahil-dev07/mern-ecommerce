@@ -3,13 +3,26 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="/my_favicon.ico" />
+  <!-- SVG first (scales to any tab/bookmark size), .ico kept as the fallback for
+       browsers that don't take an SVG favicon. -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" href="/my_favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Ecommerce App" />
+  <!-- brand-900. Tints the browser/OS chrome on mobile. -->
+  <meta name="theme-color" content="#064E3B" />
+  <!-- The app has no dark styling, so declare light and let the browser skip its
+       own dark-mode form-control heuristics rather than half-inverting the UI. -->
+  <meta name="color-scheme" content="light" />
+  <meta name="description"
+    content="Kartly — a demo storefront: browse the catalogue, filter by category and brand, and check out." />
   <link rel="apple-touch-icon" href="/logo192.png" />
   <link rel="manifest" href="/manifest.json" />
-  <title>Ecommerce App</title>
+  <!-- No og:image tag until a real 1200x630 asset exists (G8, Tier 1). A tag
+       pointing at a missing file unfurls worse than no tag at all. -->
+  <meta property="og:title" content="Kartly" />
+  <meta property="og:description" content="A demo storefront built with React, Redux Toolkit and Express." />
+  <meta property="og:type" content="website" />
+  <title>Kartly — Shop</title>
 </head>
 
 <body class="h-full">

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectItems } from '../cart/cartSlice'
 import { selectLoggedInUser } from '../auth/authSlice'
+import Logo from '../common/Logo'
 
 
 // const user = {
@@ -41,6 +42,14 @@ const DEFAULT_AVATAR =
 
 
 
+// Every read of `user` below is optional-chained. Navbar is only ever rendered
+// today inside an already-redirected <Protected>, so a null user "cannot happen" —
+// but that is a property of where it is mounted, not of this component, and the
+// Layout refactor moves it. Guarding here first means the route change is not the
+// thing that has to be correct.
+//
+// Renders nothing user-specific when signed out rather than crashing: the nav
+// links disappear (no role matches), and the name/email lines go blank.
 const Navbar = ({ children }) => {
     const items = useSelector(selectItems)
     const user = useSelector(selectLoggedInUser)
@@ -54,19 +63,16 @@ const Navbar = ({ children }) => {
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
                                         <Link to='/'>
-                                            {/* Logo served from Vite public/ dir (root path). Was a dead
-                                                tailwindui.com URL that now 404s, causing a broken image. */}
-                                            <img
-                                                className="h-8 w-8"
-                                                src="/logo192.png"
-                                                alt="E-Commerce"
-                                            />
+                                            {/* Inline wordmark — no image request, so nothing here can 404.
+                                                text-white colours the "Kartly" text; the bag glyph is
+                                                brand-500 from inside Logo. */}
+                                            <Logo className="h-8 text-white" />
                                         </Link>
                                     </div>
                                     <div className="hidden md:block">
                                         <div className="ml-10 flex items-baseline space-x-4">
                                             {navigation.map((item) => (
-                                                item[user.role] ? <Link
+                                                item[user?.role] ? <Link
                                                     key={item.name}
                                                     to={item.link}
                                                     className={classNames(
@@ -165,7 +171,7 @@ const Navbar = ({ children }) => {
                             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
 
                                 {navigation.map((item) => (
-                                    item[user.role] ? <Link
+                                    item[user?.role] ? <Link
                                         key={item.name}
                                         to={item.link}
                                         className={classNames(
@@ -192,8 +198,8 @@ const Navbar = ({ children }) => {
                                         />
                                     </div>
                                     <div className="ml-3">
-                                        <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                                        <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                                        <div className="text-base font-medium leading-none text-white">{user?.name}</div>
+                                        <div className="text-sm font-medium leading-none text-gray-400">{user?.email}</div>
                                     </div>
                                     <Link to='/cart'>
                                         <button

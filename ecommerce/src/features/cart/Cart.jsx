@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { deleteItemFromCartAsync, selectCartStatus, selectItems, updateCartAsync } from './cartSlice';
-import { discountedPrice, onImageError } from '../../app/constants';
+import { LOADER_COLOR, discountedPrice, onImageError } from '../../app/constants';
 import { HashLoader } from "react-spinners"
 import Modal from '../common/Modal';
 import { selectLoggedInUser } from '../auth/authSlice';
@@ -53,9 +53,8 @@ export default function Cart() {
             {status === 'loading' ?
               <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <HashLoader
-                  // color='#464FE5'
                   size='120px'
-                  color="#36d7b7"
+                  color={LOADER_COLOR}
                 />
               </div>
               : null}
@@ -109,7 +108,7 @@ export default function Cart() {
                         <button
                           onClick={(e) => { setOpenModal(item.product.id) }}
                           type="button"
-                          className="font-medium text-indigo-600 hover:text-indigo-500"
+                          className="font-medium text-brand-700 hover:text-brand-800"
                         >
                           Remove
                         </button>
@@ -136,7 +135,7 @@ export default function Cart() {
           <div className="mt-6">
             <Link
               to='/checkout'
-              className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+              className="flex items-center justify-center rounded-md border border-transparent bg-brand-700 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-brand-800"
             >
               Checkout
             </Link>
@@ -147,7 +146,7 @@ export default function Cart() {
               <Link to='/' >
                 <button
                   type="button"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                  className="font-medium text-brand-700 hover:text-brand-800"
                   onClick={() => setOpen(false)}
                 >
                   Continue Shopping

@@ -1,12 +1,21 @@
+/* Self-hosted Plus Jakarta Sans (variable, weights 200-800 in one file). Imported
+   here rather than from index.jsx because that file is on the do-not-touch list —
+   its PersistGate config is load-bearing. @import must precede the @tailwind
+   directives, and Vite resolves the bare specifier out of node_modules.
+   fontsource ships font-display: swap, so text paints immediately in the fallback
+   and re-renders when the font arrives; there is no invisible-text flash. */
+@import '@fontsource-variable/plus-jakarta-sans';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* No font-family here on purpose. Tailwind's preflight sets it on <html> from
+   theme.fontFamily.sans, and a declaration on body outranks that — which is
+   exactly why the old -apple-system stack meant the app ignored its own Tailwind
+   font config. One source of truth: tailwind.config.js. */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -12,6 +12,15 @@ export function discountedPrice(item) {
     return Math.round(item.price * (1 - item.discountPercentage / 100))
 }
 
+// Spinner colour, as a hex literal because react-spinners takes a `color` prop and
+// cannot read a Tailwind class. It was hardcoded at five call sites in two
+// different colours — #36d7b7 in ProductGrid, Cart, ProductDetail and Checkout's
+// cart panel, and #4F46E5 on Checkout's full-page loader — so the spinner changed
+// colour depending on which screen you were on. Keep this in step with `brand.600`
+// in tailwind.config.js: it is the one token value that has to exist outside the
+// Tailwind config, because this consumer is a JS prop, not a class.
+export const LOADER_COLOR = '#059669'
+
 // Inline-SVG placeholder (light tile + sun + mountains) shown when a product image
 // fails to load. Product image URLs are seeded from dummyjson, whose CDN URL scheme
 // has changed before, leaving dead thumbnail/images URLs in the DB. Bundling the

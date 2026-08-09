@@ -4,7 +4,11 @@ import { persistor } from './store'
 // Auth thunks whose rejection is NOT a session-expiry: a 401 on login/signup
 // means bad credentials (shown inline by the auth slice), and signout is a
 // logout already — none should trigger the force-redirect below.
-const AUTH_ACTION_PREFIXES = ['user/checkUser', 'user/createUser', 'user/signout']
+// Exported so a test can assert each prefix still matches a live thunk's
+// typePrefix. These strings depend on authSlice's `name: 'user'`, which does NOT
+// match the store key ('auth') — renaming the slice silently breaks the 401
+// auto-logout with no runtime error anywhere.
+export const AUTH_ACTION_PREFIXES = ['user/checkUser', 'user/createUser', 'user/signout']
 
 // Global 401 handler. When any authenticated thunk rejects with status 401
 // (expired/invalid/absent token), force a clean logout: clear the token, purge
